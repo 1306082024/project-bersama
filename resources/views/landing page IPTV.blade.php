@@ -43,6 +43,9 @@
             font-size: 13px;
             font-weight: 600;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
         .hero {
@@ -93,13 +96,41 @@
             opacity: 0.7;
             padding-bottom: 40px;
         }
+
+        /* ============= ANIMATIONS ============= */
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 12px rgba(255,255,255,0.25); }
+            50% { box-shadow: 0 0 20px rgba(255,255,255,0.5); }
+            100% { box-shadow: 0 0 12px rgba(255,255,255,0.25); }
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 
 <body>
 
     <!-- NAVBAR -->
-    <nav class="navbar" style="background:white; color:black; border-bottom:1px solid #ddd; box-shadow:0 4px 12px rgba(0,0,0,0.1); border-radius:0 0 18px 18px;">
+    <nav class="navbar" style="background:white; color:black; border-bottom:1px solid #ddd; box-shadow:0 4px 12px rgba(0,0,0,0.1); border-radius:0 0 18px 18px; animation: fadeIn 1.2s;">
 
         <div class="brand" style="color:black;">
             <img src="{{ asset('images/gintara.png') }}" />
@@ -108,86 +139,85 @@
 
         <!-- ICONS + DATE -->
         <div style="display:flex; align-items:center; gap:22px;">
-
-            <!-- Hari & tanggal -->
+            <!-- Hari, tanggal, waktu & cuaca -->
             <div id="datetime" class="datetime-box">Loading...</div>
 
             <!-- Icons -->
-            <img src="https://img.icons8.com/ios-filled/50/search.png"
-                style="width:22px; cursor:pointer;" />
-            <img src="https://img.icons8.com/ios-filled/50/appointment-reminders.png"
-                style="width:22px; cursor:pointer;" />
-            <img src="https://img.icons8.com/ios-filled/50/user.png"
-                style="width:22px; cursor:pointer;" />
+            <img src="https://img.icons8.com/ios-filled/50/search.png" style="width:22px; cursor:pointer;" />
+            <img src="https://img.icons8.com/ios-filled/50/appointment-reminders.png" style="width:22px; cursor:pointer;" />
+            <img src="https://img.icons8.com/ios-filled/50/user.png" style="width:22px; cursor:pointer;" />
         </div>
 
     </nav>
 
     <!-- HERO -->
     <section class="hero">
-        <div style="display:flex; justify-content:center; align-items:center; gap:12px;">
+        <div style="display:flex; justify-content:center; align-items:center; gap:12px; animation: fadeUp 1.4s;">
             <img src="{{ asset('images/gintara.png') }}" style="width:45px;">
             <h2 style="font-size:34px; font-weight:600; margin:0;">Gintara IPTV</h2>
         </div>
-        <p style="font-size:15px; opacity:0.8;">Layanan hiburan digital dari Gintara.NET untuk pengalaman streaming stabil dan tanpa buffering.</p>
 
+        <p style="font-size:15px; opacity:0.8; animation: fadeUp 1.6s;">
+            Layanan hiburan digital dari Gintara.NET untuk pengalaman streaming stabil dan tanpa buffering.
+        </p>
+
+        <!-- FAMILY ICON FLOAT ANIMATION -->
         <div style="margin-top:30px; display:flex; justify-content:center;">
             <div style="
-    padding:25px;
-    background:rgba(255,255,255,0.08);
-    border-radius:20px;
-    animation: floatUp 3s infinite ease-in-out, glowPulse 3s infinite ease-in-out;
-  ">
+                padding:25px;
+                background:rgba(255,255,255,0.08);
+                border-radius:20px;
+                animation: floatUp 3s infinite ease-in-out, glowPulse 3s infinite ease-in-out, fadeUp 1.8s;
+            ">
                 <img src="https://img.icons8.com/ios-filled/200/family.png" style="width:160px;">
             </div>
         </div>
-        <div class="menu-grid">
 
-            <div class="card">
+        <!-- MENU GRID -->
+        <div class="menu-grid">
+            <div class="card" style="animation: slideUp 1s;">
                 <img src="https://img.icons8.com/ios-filled/100/tv.png" />
                 <h3>LIVE TV</h3>
                 <p style="font-size: 12px;">100+ channel lokal & internasional</p>
             </div>
 
-            <div class="card red">
+            <div class="card red" style="animation: slideUp 1.2s;">
                 <img src="https://img.icons8.com/ios-filled/100/play-button-circled.png" />
                 <h3>MOVIES</h3>
                 <p style="font-size: 12px;">Film terbaru siap ditonton</p>
             </div>
 
-            <div class="card purple">
+            <div class="card purple" style="animation: slideUp 1.4s;">
                 <img src="https://img.icons8.com/ios-filled/100/clapperboard.png" />
                 <h3>SERIES</h3>
                 <p style="font-size: 12px;">Serial lengkap berbagai genre</p>
             </div>
-
         </div>
 
         <!-- FEATURE BOXES -->
         <div style="margin-top:30px; display:flex; justify-content:center; gap:20px;">
 
-            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px;">
+            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.6s;">
                 <img src="https://img.icons8.com/ios-filled/50/wifi.png" style="width:20px;">
                 <span style="font-size:13px;">Streaming Stabil</span>
             </div>
 
-            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px;">
+            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.7s;">
                 <img src="https://img.icons8.com/ios-filled/50/clapperboard.png" style="width:20px;">
                 <span style="font-size:13px;">Banyak Konten</span>
             </div>
 
-            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px;">
+            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.8s;">
                 <img src="https://img.icons8.com/ios-filled/50/phone.png" style="width:20px;">
                 <span style="font-size:13px;">Support 24 Jam</span>
             </div>
 
         </div>
 
-        <div class="footer">Powered by Gintara.NET</div>
+        <div class="footer" style="animation: fadeUp 2s;">Powered by Gintara.NET</div>
     </section>
 
-
-    <!-- SCRIPT HARI & TANGGAL -->
+    <!-- SCRIPT WAKTU + TANGGAL + CUACA -->
     <script>
         function updateDateTime() {
             const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
@@ -199,12 +229,17 @@
             let month = months[now.getMonth()];
             let year = now.getFullYear();
 
-            document.getElementById("datetime").innerText =
-                `${dayName}, ${date} ${month} ${year}`;
+            let hours = now.getHours().toString().padStart(2, "0");
+            let minutes = now.getMinutes().toString().padStart(2, "0");
+
+            let weatherIcon = "⛅"; // simpel (tanpa API biar aman)
+
+            document.getElementById("datetime").innerHTML =
+                `${weatherIcon} ${dayName}, ${date} ${month} ${year} • ${hours}:${minutes}`;
         }
 
         updateDateTime();
-        setInterval(updateDateTime, 60000); // update tiap 1 menit
+        setInterval(updateDateTime, 60000);
     </script>
 
 </body>
