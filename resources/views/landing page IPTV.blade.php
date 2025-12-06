@@ -78,7 +78,7 @@
 
   <nav class="navbar" style="background:white; color:black; border-bottom:1px solid #ddd; box-shadow:0 4px 12px rgba(0,0,0,0.1); border-radius:0 0 18px 18px;">
     <div class="brand" style="color:black;">
-      <img src="" />
+      <img src="{{ asset('images/gintara.png') }}" />
       <span style="color:black;">Gintara.Net</span>
     </div>
     <div style="display:flex; align-items:center; gap:18px;">
