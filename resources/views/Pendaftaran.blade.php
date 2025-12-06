@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Buku Tamu Gintara</title>
-  <meta name="description" content="Landing page buku tamu Gintara — paket Internet Rumah (Hemat, Puas, Mantap)." />
+  <title>Pendaftaran Gintara</title>
+  <meta name="description" content="Landing page Pendaftaran Gintara — paket Internet Rumah (Hemat, Puas, Mantap)." />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -82,7 +83,6 @@
     .hero-card{
       background:#fff;padding:12px;border-radius:10px;border:1px solid rgba(7,19,37,0.04)
     }
-    .hero-card .label{font-weight:700;color:var(--primary);font-size:14px}
 
     .grid{
       display:grid;
@@ -190,8 +190,7 @@
 </head>
 <body>
   <main class="shell" id="app">
-    <!-- HERO -->
-    <section class="hero" aria-label="Hero Buku Tamu">
+    <section class="hero" aria-label="Hero">
       <div class="hero-left">
         <div style="display:flex;align-items:center;gap:14px">
           <div class="logo">
@@ -205,8 +204,8 @@
         </div>
 
         <div class="hero-cta">
-          <button class="btn btn-primary" onclick="document.getElementById('name').focus()">Isi Sekarang</button>
-          <button class="btn btn-ghost" onclick="document.getElementById('paket').focus()">Lihat Paket</button>
+          <button class="btn btn-primary" onclick="goToSlide(1)">Isi Sekarang</button>
+          <button class="btn btn-ghost" onclick="goToSlide(2)">Lihat Paket</button>
         </div>
       </div>
 
@@ -219,47 +218,68 @@
       </div>
     </section>
 
-    <!-- MAIN GRID -->
-    <section class="grid" aria-label="Konten Utama">
-      <!-- LEFT: Form -->
-      <aside class="card" aria-labelledby="form-title">
-        <h2 id="form-title">Buku Tamu</h2>
-        <p class="small">Isi data singkat — No. HP dan Pesan wajib diisi.</p>
-
-        <form id="guestForm" autocomplete="off" novalidate>
-          <!-- honeypot untuk bot -->
-          <input type="text" id="hp" name="hp" class="hidden" />
-
-          <label for="name">Nama <span style="color:var(--primary)">*</span></label>
-          <input id="name" name="name" type="text" placeholder="Nama lengkap" required />
-
-          <label for="email" style="margin-top:10px">Email / WhatsApp</label>
-          <input id="email" name="email" type="text" placeholder="0812xxx / contoh@gmail.com" />
-
-          <label for="paket" style="margin-top:10px">Paket yang diminati</label>
-          <select id="paket" name="paket">
-            <option value="">— Pilih paket —</option>
-            <option value="hemat">Hemat</option>
-            <option value="puas">Puas</option>
-            <option value="mantap">Mantap</option>
+    <section class="card" aria-label="Slides utama" style="margin-top:6px">
+      <div id="slides">
+        <div class="slide" id="slide-1">
+          <h2>Area yang telah dicover</h2>
+          <p class="small">Pilih area untuk melihat paket yang tersedia.</p>
+          <label for="wilayahSelect">Wilayah</label>
+          <select id="wilayahSelect">
+            <option value="">— Memuat wilayah —</option>
           </select>
+          <div style="margin-top:12px">
+            <button class="btn btn-primary" onclick="goToSlide(2)">Lanjut ke Pilihan Paket</button>
+          </div>
+        </div>
 
-          <label for="message" style="margin-top:10px">Pesan / Keterangan <span style="color:var(--primary)">*</span></label>
-          <textarea id="message" name="message" placeholder="Contoh: saya ingin pasang paket Mantap..." required></textarea>
+        <div class="slide hidden" id="slide-2">
+          <h2>Pilihan Paket</h2>
+          <p class="small">Harga mengikuti wilayah yang Anda pilih.</p>
+          <div id="packages" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px"></div>
+          <div style="margin-top:12px">
+            <button class="btn btn-ghost" onclick="goToSlide(1)">Kembali</button>
+          </div>
+        </div>
 
+        <div class="slide hidden" id="slide-3">
+          <h2>Pendaftaran</h2>
+          <p class="small">Isi data singkat — No. HP dan Pesan wajib diisi.</p>
+
+          <form id="guestForm" autocomplete="off" novalidate>
+            <input type="hidden" id="selected_wilayah" name="wilayah_id" />
+            <input type="hidden" id="selected_paket" name="paket_id" />
+
+            <label for="name">Nama <span style="color:var(--primary)">*</span></label>
+            <input id="name" name="name" type="text" placeholder="Nama lengkap" required />
+
+            <label for="contact" style="margin-top:10px">Kontak (WA / Email)</label>
+            <input id="contact" name="contact" type="text" placeholder="0812xxx / contoh@gmail.com" />
+
+            <label for="message" style="margin-top:10px">Pesan / Keterangan <span style="color:var(--primary)">*</span></label>
+            <textarea id="message" name="message" placeholder="Contoh: saya ingin pasang paket Mantap..." required></textarea>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-ghost" onclick="setLocation()">Set Lokasi</button>
+              <button type="submit" class="btn btn-primary">Kirim Pesan</button>
+            </div>
+
+            <div id="locStatus" class="small hint" style="margin-top:8px"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Konten Utama">
+      <aside class="card" aria-labelledby="form-title">
+        <h2 id="form-title">Ringkasan</h2>
+        <p class="small">Gunakan slide di atas untuk memilih wilayah → paket → isi formulir. Tombol "Set Lokasi" akan mencoba mendapatkan koordinat Anda.</p>
+        <div style="margin-top:12px">
           <div class="packages" aria-hidden="false">
             <div class="pkg">Unlimited</div>
-            <div class="pkg" style="background:#fff;border:1px solid rgba(7,19,37,0.04);color:var(--muted)">Voucher</div>
           </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Kirim Pesan</button>
-          </div>
-
-        </form>
+        </div>
       </aside>
 
-      <!-- CENTER: FAQ -->
       <article class="card" aria-labelledby="summary-title">
         <h3 id="summary-title">FAQ</h3>
         <div style="margin-top:10px" class="small">
@@ -267,11 +287,10 @@
           <div>Rata-rata 1–3 hari kerja setelah konfirmasi.</div>
 
           <strong style="margin-top:8px; display:block;">Apakah ada biaya pemasangan?</strong>
-          <div>Biasanya ada biaya awal—cek promo untuk gratis pemasangan.</div>
+          <div>tidak ada, Biaya pemasangan & instalasi GRATIS!</div>
         </div>
       </article>
 
-      <!-- RIGHT: Kenapa pilih Gintara -->
       <aside class="card" aria-labelledby="list-title">
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
           <h3 id="list-title" style="margin:0">Kenapa Pilih Gintara?</h3>
@@ -308,11 +327,155 @@
   </main>
 
   <script>
-    // form demo (tetap seperti semula)
-    document.getElementById('guestForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      alert('Terima kasih! Pesan Anda terkirim (demo).');
-      this.reset();
+    const apiBase = '/api';
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+    let wilayahList = [];
+    let selectedWilayah = null;
+    let selectedPaket = null;
+
+    function goToSlide(n){
+      document.querySelectorAll('.slide').forEach(s=>s.classList.add('hidden'));
+      const el = document.getElementById('slide-' + n);
+      if(el) el.classList.remove('hidden');
+      if(n === 2) loadPaket();
+    }
+
+    async function loadWilayah(){
+      try {
+        const res = await fetch(apiBase + '/wilayah');
+        if(!res.ok) throw new Error('Gagal memuat wilayah');
+        wilayahList = await res.json();
+        const sel = document.getElementById('wilayahSelect');
+        sel.innerHTML = '<option value="">— Pilih wilayah —</option>';
+        wilayahList.forEach(w => {
+          const opt = document.createElement('option');
+          opt.value = w.id;
+          opt.textContent = w.nama;
+          sel.appendChild(opt);
+        });
+        sel.addEventListener('change', (e) => {
+          selectedWilayah = e.target.value ? parseInt(e.target.value) : null;
+          document.getElementById('selected_wilayah').value = selectedWilayah || '';
+        });
+      } catch(err){
+        console.error(err);
+        const sel = document.getElementById('wilayahSelect');
+        if(sel) sel.innerHTML = '<option value="">Gagal memuat wilayah</option>';
+      }
+    }
+
+    async function loadPaket(){
+      try {
+        const id = selectedWilayah || 0;
+        const res = await fetch(apiBase + '/paket/wilayah/' + id);
+        if(!res.ok) throw new Error('Gagal memuat paket');
+        const data = await res.json();
+        const container = document.getElementById('packages');
+        container.innerHTML = '';
+        if(data.length === 0){
+          container.innerHTML = '<div class="small">Tidak ada paket untuk wilayah ini.</div>';
+          return;
+        }
+        data.forEach(p => {
+          const div = document.createElement('div');
+          div.className = 'pkg';
+          div.style.minWidth = '220px';
+          div.innerHTML = `
+            <div style="font-weight:700">${p.nama} — Rp ${Number(p.harga).toLocaleString('id-ID')}</div>
+            <div style="font-size:13px;margin-top:6px">${p.deskripsi || ''}</div>
+            <div style="margin-top:8px">
+              <button class="btn btn-primary" type="button" onclick="pickPaket(${p.id}, '${(p.nama+'').replace(/'/g,'\\\'')}')">Berlangganan</button>
+            </div>`;
+          container.appendChild(div);
+        });
+      } catch(err){
+        console.error(err);
+        const container = document.getElementById('packages');
+        if(container) container.innerHTML = '<div class="small">Gagal memuat paket.</div>';
+      }
+    }
+
+    function pickPaket(id, nama){
+      selectedPaket = id;
+      document.getElementById('selected_paket').value = id;
+      alert('Paket dipilih: ' + nama);
+      goToSlide(3);
+    }
+
+    function setLocation(){
+      const status = document.getElementById('locStatus');
+      if(!navigator.geolocation){
+        status.textContent = 'Geolocation tidak tersedia di perangkat ini.';
+        return;
+      }
+      status.textContent = 'Mencoba mendapatkan lokasi…';
+      navigator.geolocation.getCurrentPosition(pos=>{
+        const s = pos.coords.latitude + ',' + pos.coords.longitude;
+        const form = document.getElementById('guestForm');
+        if(form) form.dataset.lokasi = s;
+        status.textContent = 'Lokasi diset: ' + s;
+      }, err=>{
+        status.textContent = 'Gagal mendapatkan lokasi: ' + err.message;
+      }, {enableHighAccuracy:true, timeout:10000});
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+      loadWilayah();
+      goToSlide(1);
+
+      const form = document.getElementById('guestForm');
+      if(form){
+        form.addEventListener('submit', async function(e){
+          e.preventDefault();
+          const payload = {
+            nama: document.getElementById('name').value,
+            kontak: document.getElementById('contact').value,
+            wilayah_id: document.getElementById('selected_wilayah').value || null,
+            paket_id: document.getElementById('selected_paket').value || null,
+            pesan: document.getElementById('message').value,
+            lokasi: this.dataset.lokasi || null
+          };
+
+          try {
+            const res = await fetch(apiBase + '/tamu', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+              },
+              body: JSON.stringify(payload)
+            });
+
+            if(res.status === 201 || res.ok){
+              alert('Terima kasih! Pesan Anda terkirim.');
+              this.reset();
+              this.dataset.lokasi = '';
+              document.getElementById('selected_wilayah').value = '';
+              document.getElementById('selected_paket').value = '';
+              selectedWilayah = null;
+              selectedPaket = null;
+              goToSlide(1);
+            } else if(res.status === 422){
+              const data = await res.json();
+              let pesan = 'Validasi gagal:\n';
+              if(data.errors){
+                for(const k in data.errors){
+                  pesan += data.errors[k].join(', ') + '\n';
+                }
+              }
+              alert(pesan);
+            } else {
+              const txt = await res.text();
+              console.error(txt);
+              alert('Terjadi kesalahan saat mengirim.');
+            }
+          } catch(err){
+            console.error(err);
+            alert('Gagal mengirim — periksa koneksi.');
+          }
+        });
+      }
     });
   </script>
 </body>
