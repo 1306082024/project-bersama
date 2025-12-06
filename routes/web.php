@@ -11,6 +11,10 @@ Route::get('/', function () {
    return view('landing page IPTV');
 });
 
+Route::get('/BT', function () {
+   return view('landing BukuTamu');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
