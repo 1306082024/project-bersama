@@ -12,15 +12,90 @@
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0a0f2c, #0f183f);
             color: white;
+            overflow-x: hidden;
+            position: relative;
         }
 
+        /* ====================================================
+           BACKGROUND ANIMASI (GRADIENT BALL + PARTICLES)
+        ==================================================== */
+        .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0f2c, #0f183f);
+            z-index: -5;
+            overflow: hidden;
+        }
+
+        .ball1, .ball2 {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.65;
+        }
+
+        .ball1 {
+            background: rgba(0, 132, 255, 0.6);
+            top: -120px;
+            left: -80px;
+            animation: moveBall1 15s infinite alternate ease-in-out;
+        }
+
+        .ball2 {
+            background: rgba(255, 0, 153, 0.45);
+            bottom: -140px;
+            right: -100px;
+            animation: moveBall2 18s infinite alternate ease-in-out;
+        }
+
+        @keyframes moveBall1 {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(150px, 180px); }
+        }
+        @keyframes moveBall2 {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-160px, -120px); }
+        }
+
+        /* Particles */
+        .particles span {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: floatUp 6s infinite ease-in-out;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-50px); opacity: 0.4; }
+        }
+
+        /* ====================================================
+                        NAVBAR & UI NORMAL
+        ==================================================== */
         .navbar {
             padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background:white; 
+            color:black; 
+            border-bottom:1px solid #ddd; 
+            box-shadow:0 4px 12px rgba(0,0,0,0.1); 
+            border-radius:0 0 18px 18px; 
+            animation: fadeIn 1.2s;
+            position: relative;
+            z-index: 2;
         }
 
         .brand {
@@ -53,6 +128,8 @@
             margin: 0 auto;
             padding: 40px;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
 
         .menu-grid {
@@ -97,61 +174,55 @@
             padding-bottom: 40px;
         }
 
-        /* ============= ANIMATIONS ============= */
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-            100% { transform: translateY(0px); }
-        }
-
-        @keyframes glowPulse {
-            0% { box-shadow: 0 0 12px rgba(255,255,255,0.25); }
-            50% { box-shadow: 0 0 20px rgba(255,255,255,0.5); }
-            100% { box-shadow: 0 0 12px rgba(255,255,255,0.25); }
-        }
-
-        @keyframes slideUp {
-            0% { opacity: 0; transform: translateY(40px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
+        /* ANIMATIONS */
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes glowPulse { 0% { box-shadow: 0 0 12px rgba(255,255,255,0.25); } 50% { box-shadow: 0 0 20px rgba(255,255,255,0.5); } 100% { box-shadow: 0 0 12px rgba(255,255,255,0.25); } }
+        @keyframes slideUp { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar" style="background:white; color:black; border-bottom:1px solid #ddd; box-shadow:0 4px 12px rgba(0,0,0,0.1); border-radius:0 0 18px 18px; animation: fadeIn 1.2s;">
+    <!-- ====================================================
+               BACKGROUND ANIMATION ELEMENTS
+    ==================================================== -->
+    <div class="bg-animated">
+        <div class="ball1"></div>
+        <div class="ball2"></div>
 
-        <div class="brand" style="color:black;">
+        <div class="particles">
+            <script>
+                for (let i = 0; i < 25; i++) {
+                    let dot = document.createElement("span");
+                    dot.style.left = Math.random() * 100 + "%";
+                    dot.style.top = Math.random() * 100 + "%";
+                    dot.style.animationDelay = (Math.random() * 6) + "s";
+                    document.currentScript.parentNode.appendChild(dot);
+                }
+            </script>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="brand">
             <img src="{{ asset('images/gintara.png') }}" />
             <span>GINTARA.NET</span>
         </div>
 
-        <!-- ICONS + DATE -->
         <div style="display:flex; align-items:center; gap:22px;">
-            <!-- Hari, tanggal, waktu & cuaca -->
             <div id="datetime" class="datetime-box">Loading...</div>
 
-            <!-- Icons -->
             <img src="https://img.icons8.com/ios-filled/50/search.png" style="width:22px; cursor:pointer;" />
             <img src="https://img.icons8.com/ios-filled/50/appointment-reminders.png" style="width:22px; cursor:pointer;" />
             <img src="https://img.icons8.com/ios-filled/50/user.png" style="width:22px; cursor:pointer;" />
         </div>
-
     </nav>
 
     <!-- HERO -->
     <section class="hero">
+
         <div style="display:flex; justify-content:center; align-items:center; gap:12px; animation: fadeUp 1.4s;">
             <img src="{{ asset('images/gintara.png') }}" style="width:45px;">
             <h2 style="font-size:34px; font-weight:600; margin:0;">Gintara IPTV</h2>
@@ -161,19 +232,16 @@
             Layanan hiburan digital dari Gintara.NET untuk pengalaman streaming stabil dan tanpa buffering.
         </p>
 
-        <!-- FAMILY ICON FLOAT ANIMATION -->
         <div style="margin-top:30px; display:flex; justify-content:center;">
             <div style="
                 padding:25px;
                 background:rgba(255,255,255,0.08);
                 border-radius:20px;
-                animation: floatUp 3s infinite ease-in-out, glowPulse 3s infinite ease-in-out, fadeUp 1.8s;
             ">
                 <img src="https://img.icons8.com/ios-filled/200/family.png" style="width:160px;">
             </div>
         </div>
 
-        <!-- MENU GRID -->
         <div class="menu-grid">
             <div class="card" style="animation: slideUp 1s;">
                 <img src="https://img.icons8.com/ios-filled/100/tv.png" />
@@ -194,9 +262,7 @@
             </div>
         </div>
 
-        <!-- FEATURE BOXES -->
         <div style="margin-top:30px; display:flex; justify-content:center; gap:20px;">
-
             <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.6s;">
                 <img src="https://img.icons8.com/ios-filled/50/wifi.png" style="width:20px;">
                 <span style="font-size:13px;">Streaming Stabil</span>
@@ -211,13 +277,12 @@
                 <img src="https://img.icons8.com/ios-filled/50/phone.png" style="width:20px;">
                 <span style="font-size:13px;">Support 24 Jam</span>
             </div>
-
         </div>
 
         <div class="footer" style="animation: fadeUp 2s;">Powered by Gintara.NET</div>
     </section>
 
-    <!-- SCRIPT WAKTU + TANGGAL + CUACA -->
+    <!-- DATE & TIME SCRIPT -->
     <script>
         function updateDateTime() {
             const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
@@ -232,7 +297,7 @@
             let hours = now.getHours().toString().padStart(2, "0");
             let minutes = now.getMinutes().toString().padStart(2, "0");
 
-            let weatherIcon = "⛅"; // simpel (tanpa API biar aman)
+            let weatherIcon = "⛅";
 
             document.getElementById("datetime").innerHTML =
                 `${weatherIcon} ${dayName}, ${date} ${month} ${year} • ${hours}:${minutes}`;
@@ -243,5 +308,4 @@
     </script>
 
 </body>
-
 </html>
