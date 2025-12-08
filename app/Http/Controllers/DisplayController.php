@@ -13,26 +13,26 @@ class DisplayController extends Controller
 
     public function restoran()
     {
-        return view('restoran'); // pastikan file resources/views/beranda.blade.php ada
+        return view('restoran.restoran'); // pastikan file resources/views/beranda.blade.php ada
     }
 
     public function layanan()
     {
-        return view('layanan'); // pastikan file resources/views/beranda.blade.php ada
+        return view('layanan.layanan'); // pastikan file resources/views/beranda.blade.php ada
     }
 
     public function fasilitas()
     {
-        return view('fasilitas'); // pastikan file resources/views/beranda.blade.php ada
+        return view('fasilitas.fasilitas'); // pastikan file resources/views/beranda.blade.php ada
     }
 
     public function tvnfilm()
     {
-        return view('tvnfilm'); // pastikan file resources/views/beranda.blade.php ada
+        return view('tvnfilm.tvnfilm'); // pastikan file resources/views/beranda.blade.php ada
     }
-    
+
     public function yt()
     {
-        return view('yt'); // pastikan file resources/views/beranda.blade.php ada
+        return view('yt.yt'); // pastikan file resources/views/beranda.blade.php ada
     }
 }

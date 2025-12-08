@@ -35,11 +35,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/beranda', [DisplayController::class, 'beranda'])->name('beranda');
-Route::get('/restoran', [DisplayController::class, 'restoran'])->name('restoran');
-Route::get('/layanan', [DisplayController::class, 'layanan'])->name('layanan');
-Route::get('/fasilitas', [DisplayController::class, 'fasilitas'])->name('fasilitas');
-Route::get('/tvnfilm', [DisplayController::class, 'tvnfilm'])->name('tvnfilm');
-Route::get('/yt', [DisplayController::class, 'yt'])->name('yt');
+Route::get('/restoran', [DisplayController::class, 'restoran'])->name('restoran.restoran');
+Route::get('/layanan', [DisplayController::class, 'layanan'])->name('layanan.layanan');
+Route::get('/fasilitas', [DisplayController::class, 'fasilitas'])->name('fasilitas.fasilitas');
+Route::get('/tvnfilm', [DisplayController::class, 'tvnfilm'])->name('tvnfilm.tvnfilm');
+Route::get('/yt', [DisplayController::class, 'yt'])->name('yt.yt');
 
 
 
