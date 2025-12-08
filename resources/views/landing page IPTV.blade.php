@@ -31,7 +31,8 @@
             overflow: hidden;
         }
 
-        .ball1, .ball2 {
+        .ball1,
+        .ball2 {
             position: absolute;
             width: 450px;
             height: 450px;
@@ -55,12 +56,23 @@
         }
 
         @keyframes moveBall1 {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(150px, 180px); }
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(150px, 180px);
+            }
         }
+
         @keyframes moveBall2 {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-160px, -120px); }
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(-160px, -120px);
+            }
         }
 
         /* Particles */
@@ -75,9 +87,19 @@
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(0); opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { transform: translateY(-50px); opacity: 0.4; }
+            0% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-50px);
+                opacity: 0.4;
+            }
         }
 
         /* ====================================================
@@ -88,11 +110,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background:white; 
-            color:black; 
-            border-bottom:1px solid #ddd; 
-            box-shadow:0 4px 12px rgba(0,0,0,0.1); 
-            border-radius:0 0 18px 18px; 
+            background: white;
+            color: black;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 18px 18px;
             animation: fadeIn 1.2s;
             position: relative;
             z-index: 2;
@@ -161,6 +183,18 @@
             background: linear-gradient(140deg, #a29bfe, #6c5ce7);
         }
 
+        .card.yellow {
+            background: linear-gradient(140deg, #fdc55bff, #ffc61aff);
+        }
+
+        .card.pink {
+            background: linear-gradient(140deg, #e897e8ff, #f600deff);
+        }
+
+        .card.green {
+            background: linear-gradient(140deg, #87ffabff, #43e117ff);
+        }
+
         .card img {
             width: 60px;
             margin-bottom: 15px;
@@ -174,11 +208,90 @@
             padding-bottom: 40px;
         }
 
+        /* ================================
+           CARD BERANDA UTAMA (TAMBAHAN)
+        =================================*/
+        .main-home-card {
+            width: 200px;
+            margin: 35px auto;
+            padding: 35px;
+            text-align: center;
+            background: linear-gradient(140deg, #00b7ff, #0066ff);
+            border-radius: 25px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        .main-home-card:hover {
+            transform: translateY(-6px);
+            opacity: 0.95;
+        }
+
+        .main-home-card img {
+            width: 70px;
+            margin-bottom: 12px;
+        }
+
+        a {
+            text-decoration: none;
+            /* Hilangin garis bawah */
+            color: inherit;
+            /* Ikutin warna card (biar gak biru) */
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
         /* ANIMATIONS */
-        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
-        @keyframes glowPulse { 0% { box-shadow: 0 0 12px rgba(255,255,255,0.25); } 50% { box-shadow: 0 0 20px rgba(255,255,255,0.5); } 100% { box-shadow: 0 0 12px rgba(255,255,255,0.25); } }
-        @keyframes slideUp { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes glowPulse {
+            0% {
+                box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            }
+
+            100% {
+                box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+            }
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -235,48 +348,99 @@
         <div style="margin-top:30px; display:flex; justify-content:center;">
             <div style="
                 padding:25px;
+                margin: 5px;
                 background:rgba(255,255,255,0.08);
                 border-radius:20px;
             ">
-                <img src="https://img.icons8.com/ios-filled/200/family.png" style="width:160px;">
+                <img src="https://img.icons8.com/ios-filled/200/family.png" style="width:60px;">
+            </div>
+            <div style="
+                padding:25px;
+                margin: 5px;
+                background:rgba(255,255,255,0.08);
+                border-radius:20px;
+            ">
+                <img src="https://img.icons8.com/ios-filled/200/user.png" style="width:60px;">
+            </div>
+            <div style="
+                padding:25px;
+                margin: 5px;
+                background:rgba(255,255,255,0.08);
+                border-radius:20px;
+            ">
+                <img src="https://img.icons8.com/ios-filled/200/businessman.png" style="width:60px;">
             </div>
         </div>
 
-        <div class="menu-grid">
-            <div class="card" style="animation: slideUp 1s;">
-                <img src="https://img.icons8.com/ios-filled/100/tv.png" />
-                <h3>LIVE TV</h3>
-                <p style="font-size: 12px;">100+ channel lokal & internasional</p>
+        <!-- ===========================
+             CARD BERANDA (TAMBAHAN)
+        ============================ -->
+        <a href="#">
+            <div class="main-home-card" style="animation: slideUp 0.9s;">
+                <img src="https://img.icons8.com/ios-filled/100/home.png" />
+                <h3>BERANDA</h3>
+                <p style="font-size: 13px;">Halaman utama layanan GINTARA.NET</p>
             </div>
+        </a>
 
-            <div class="card red" style="animation: slideUp 1.2s;">
-                <img src="https://img.icons8.com/ios-filled/100/play-button-circled.png" />
-                <h3>MOVIES</h3>
-                <p style="font-size: 12px;">Film terbaru siap ditonton</p>
-            </div>
+        <!-- GRID MENU -->
+         <a href="#">
+             <div class="menu-grid">
+                 <div class="card" style="animation: slideUp 1s;">
+                     <img src="https://img.icons8.com/ios-filled/100/tv.png" />
+                     <h3>LIVE TV</h3>
+                     <p style="font-size: 12px;">100+ channel lokal & internasional</p>
+                 </div>
 
-            <div class="card purple" style="animation: slideUp 1.4s;">
-                <img src="https://img.icons8.com/ios-filled/100/clapperboard.png" />
-                <h3>SERIES</h3>
-                <p style="font-size: 12px;">Serial lengkap berbagai genre</p>
-            </div>
+         </a>
+
+         <a href="#">
+             <div class="card red" style="animation: slideUp 1.2s;">
+                 <img src="https://img.icons8.com/ios-filled/100/play-button-circled.png" />
+                 <h3>MOVIES</h3>
+                 <p style="font-size: 12px;">Film terbaru siap ditonton</p>
+             </div>
+         </a>
+
+         <a href="#">
+             <div class="card purple" style="animation: slideUp 1.4s;">
+                 <img src="https://img.icons8.com/ios-filled/100/clapperboard.png" />
+                 <h3>SERIES</h3>
+                 <p style="font-size: 12px;">Serial lengkap berbagai genre</p>
+             </div>
+         </a>
+
+         <a href="#">
+             <div class="card yellow">
+                 <img src="https://img.icons8.com/ios-filled/100/food.png" />
+                 <h3>RESTORAN</h3>
+                 <p style="font-size: 12px;">Berbagai macam restoran</p>
+             </div>
+         </a>
+
+         <a href="#">
+             <div class="card pink">
+                 <img src="https://img.icons8.com/ios-filled/100/service.png" />
+                 <h3>LAYANAN</h3>
+                 <p style="font-size: 12px;">Menyediakan berbagai layanan</p>
+             </div>
+         </a>
+
+         <a href="#">
+             <div class="card green">
+                 <img src="https://img.icons8.com/ios-filled/100/door.png" />
+                 <h3>FASILITAS</h3>
+                 <p style="font-size: 12px;">Fasilitas yang lengkap dan dapat dinikmati</p>
+             </div>
+         </a>
         </div>
 
         <div style="margin-top:30px; display:flex; justify-content:center; gap:20px;">
-            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.6s;">
-                <img src="https://img.icons8.com/ios-filled/50/wifi.png" style="width:20px;">
-                <span style="font-size:13px;">Streaming Stabil</span>
-            </div>
-
-            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.7s;">
-                <img src="https://img.icons8.com/ios-filled/50/clapperboard.png" style="width:20px;">
-                <span style="font-size:13px;">Banyak Konten</span>
-            </div>
-
-            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.8s;">
-                <img src="https://img.icons8.com/ios-filled/50/phone.png" style="width:20px;">
-                <span style="font-size:13px;">Support 24 Jam</span>
-            </div>
+            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.6s;"> <img src="https://img.icons8.com/ios-filled/50/wifi.png" style="width:20px;"> <span style="font-size:13px;">Streaming Stabil</span> </div>
+            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.7s;"> <img src="https://img.icons8.com/ios-filled/50/clapperboard.png" style="width:20px;"> <span style="font-size:13px;">Banyak Konten</span> </div>
+            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.8s;"> <img src="https://img.icons8.com/ios-filled/50/phone.png" style="width:20px;"> <span style="font-size:13px;">Support 24 Jam</span> </div>
+            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.8s;"> <img src="https://img.icons8.com/ios-filled/50/service.png" style="width:20px;"> <span style="font-size:13px;">Service yang selalu siap</span> </div>
+            <div style="display:flex; align-items:center; gap:8px; background:#142b6f; padding:10px 18px; border-radius:14px; animation: slideUp 1.8s;"> <img src="https://img.icons8.com/ios-filled/50/door.png" style="width:20px;"> <span style="font-size:13px;">Fasilitas yang terbaik</span> </div>
         </div>
 
         <div class="footer" style="animation: fadeUp 2s;">Powered by Gintara.NET</div>
@@ -308,4 +472,5 @@
     </script>
 
 </body>
+
 </html>
