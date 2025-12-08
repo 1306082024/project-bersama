@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DisplayController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -9,6 +10,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
    return view('landing page IPTV');
+});
+
+Route::get('/beranda', function () {
+   return view('beranda');
 });
 
 Route::get('/Pendaftaran', function () {
@@ -28,6 +33,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/beranda', [DisplayController::class, 'beranda'])->name('beranda');
+Route::get('/restoran', [DisplayController::class, 'restoran'])->name('restoran');
+Route::get('/layanan', [DisplayController::class, 'layanan'])->name('layanan');
+Route::get('/fasilitas', [DisplayController::class, 'fasilitas'])->name('fasilitas');
+Route::get('/tvnfilm', [DisplayController::class, 'tvnfilm'])->name('tvnfilm');
+Route::get('/yt', [DisplayController::class, 'yt'])->name('yt');
 
 
 

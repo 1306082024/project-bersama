@@ -326,7 +326,6 @@
 
         <div style="display:flex; align-items:center; gap:22px;">
             <div id="datetime" class="datetime-box">Loading...</div>
-
             <img src="https://img.icons8.com/ios-filled/50/search.png" style="width:22px; cursor:pointer;" />
             <img src="https://img.icons8.com/ios-filled/50/appointment-reminders.png" style="width:22px; cursor:pointer;" />
             <img src="https://img.icons8.com/ios-filled/50/user.png" style="width:22px; cursor:pointer;" />
@@ -375,7 +374,7 @@
         <!-- ===========================
              CARD BERANDA (TAMBAHAN)
         ============================ -->
-        <a href="#">
+        <a href="{{ route('beranda') }}">
             <div class="main-home-card" style="animation: slideUp 0.9s;">
                 <img src="https://img.icons8.com/ios-filled/100/home.png" />
                 <h3>BERANDA</h3>
@@ -430,7 +429,7 @@
              <div class="card green">
                  <img src="https://img.icons8.com/ios-filled/100/door.png" />
                  <h3>FASILITAS</h3>
-                 <p style="font-size: 12px;">Fasilitas yang lengkap dan dapat dinikmati</p>
+                 <p style="font-size: 12px;">Fasilitas yang lengkap</p>
              </div>
          </a>
         </div>
