@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin – Daftar Tamu & Kelola Wilayah/Paket</title>
+  <title>Data Pendaftar & Kelola Wilayah/Paket</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
-
+  <link rel="icon" type="image/png" href="{{ asset('storage/gambar/favicon-gintara.png') }}">
   <style>
     :root{
       --bg:#f4f8ff;
@@ -46,6 +46,9 @@
     .btn-ghost{
       padding:8px 12px;border-radius:10px;background:#fff;border:1px solid rgba(7,19,37,0.06);color:var(--primary);cursor:pointer;font-weight:700;
     }
+    .btn-danger{
+      padding:8px 12px;border-radius:10px;background:#fee2e2;border:1px solid #fecaca;color:#b91c1c;cursor:pointer;font-weight:700;
+    }
 
     .grid{
       display:grid;
@@ -78,7 +81,7 @@
     .form-row .wide{flex:1 1 220px}
     .form-row .narrow{width:120px}
 
-    /* Paket card admin + frontend */
+    /* Paket card admin */
     .paket-card{
       background: linear-gradient(180deg,#fff,#f7fbff);
       border-radius:12px;
@@ -92,34 +95,27 @@
       margin:8px;
       box-sizing:border-box;
     }
-    .paket-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
     .paket-price{font-size:18px;font-weight:800;color:var(--primary)}
     .paket-desc{font-size:13px;color:var(--muted);margin-top:6px}
     .paket-actions{margin-top:12px;display:flex;gap:8px;align-items:center;justify-content:space-between}
-    .btn-subscribe{background:linear-gradient(90deg,var(--primary),var(--accent-2));color:#fff;padding:8px 10px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
 
-    /* responsive */
     @media (max-width:980px){
       body{padding:16px}
       .grid{grid-template-columns:1fr}
     }
 
-    /* kecil */
     .muted{color:var(--muted);font-size:13px}
-    .danger{color:#c0262e}
-    .pill{padding:6px 8px;border-radius:8px;background:#f1f5f9;font-size:13px}
   </style>
 </head>
 <body>
   <main class="shell">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
       <div>
-        <h1>📋 Daftar Tamu</h1>
-        <div class="muted">Lihat & kelola tamu, wilayah, dan paket</div>
+        <h1>Data Pendaftar</h1>
+        <div class="muted">Lihat & kelola pendaftar, wilayah, dan paket</div>
       </div>
       <div class="top-actions">
         <button class="reload-btn" onclick="loadData()">⟳ Muat Ulang</button>
-        <button class="btn-ghost" onclick="refreshWilayahList()">Muat Wilayah</button>
       </div>
     </div>
 
@@ -133,47 +129,78 @@
               <th>Kontak</th>
               <th>Wilayah</th>
               <th>Paket</th>
+              <th>Alamat</th>
               <th>Pesan</th>
-              <th>Lokasi</th>
+              <th>Maps</th>
               <th>Tanggal</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td colspan="7" class="small">Memuat data...</td></tr>
+            <tr><td colspan="9" class="small">Memuat data...</td></tr>
           </tbody>
         </table>
       </section>
 
       <!-- RIGHT: kelola wilayah & paket -->
       <aside style="display:flex;flex-direction:column;gap:12px">
-        <div class="card" aria-label="Kelola Wilayah">
+
+        <!-- WILAYAH -->
+        <div class="card">
           <h2>Kelola Wilayah</h2>
           <div class="muted">Tambah atau hapus wilayah yang dicover</div>
 
           <div class="form-row" style="margin-top:10px">
-            <input id="wil_nama" class="wide" placeholder="Nama wilayah (contoh: Klayan Tahap 1)">
+            <input id="wil_nama" class="wide" placeholder="Nama wilayah">
             <input id="wil_ket" class="wide" placeholder="Keterangan (opsional)">
-            <button class="reload-btn" onclick="tambahWilayah()">Tambah Wilayah</button>
+            <button class="reload-btn" onclick="tambahWilayah()">Tambah</button>
           </div>
 
           <div id="wilayahList" style="margin-top:12px" class="small">Memuat wilayah...</div>
         </div>
 
-        <div class="card" aria-label="Kelola Paket">
+        <!-- PAKET -->
+        <div class="card">
           <h2>Kelola Paket</h2>
-          <div class="muted">Buat paket baru dan kaitkan ke wilayah yang tersedia (Ctrl/Cmd+klik untuk pilih banyak)</div>
+          <div class="muted">Buat / ubah paket & hubungkan wilayah (centang)</div>
 
-          <div class="form-row" style="margin-top:10px">
-            <input id="paket_nama" class="wide" placeholder="Nama paket (Hemat/Puas/Mantap)">
+          <input type="hidden" id="paket_id_edit">
+
+          <div class="form-row">
+            <input id="paket_nama" class="wide" placeholder="Nama paket">
             <input id="paket_harga" class="narrow" placeholder="Harga (angka)">
           </div>
-          <div class="form-row" style="margin-top:8px">
+
+          <div class="form-row">
             <input id="paket_deskripsi" class="wide" placeholder="Deskripsi singkat">
-            <select id="paket_wilayah" multiple class="wide" style="min-height:40px"></select>
           </div>
-          <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
-            <button class="reload-btn" onclick="tambahPaket()">Tambah Paket</button>
-            <button class="btn-ghost" onclick="loadPaketAdmin()">Muat Paket</button>
+
+          <div style="margin-top:8px;font-size:13px;color:var(--muted);">
+            Wilayah paket (centang yang tersedia):
+          </div>
+          <div id="paket_wilayah_wrapper" style="
+              margin-top:6px;
+              max-height:150px;
+              overflow:auto;
+              border-radius:10px;
+              border:1px solid rgba(7,19,37,0.06);
+              padding:8px 10px;
+              background:#ffffff;
+              font-size:13px;
+          ">
+            <div class="small">Memuat wilayah...</div>
+          </div>
+
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+            <button class="reload-btn" onclick="simpanPaket()" id="btnPaketSave">
+              Tambah Paket
+            </button>
+            <button class="btn-ghost" onclick="resetFormPaket()">
+              Reset Form
+            </button>
+            <button class="btn-ghost" onclick="loadPaketAdmin()">
+              Muat Paket
+            </button>
           </div>
 
           <div id="paketAdminList" class="muted" style="margin-top:12px">Memuat paket...</div>
@@ -184,21 +211,27 @@
 
   <script>
     const apiBase = '/api';
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-    // ---------- Tamu ----------
+    let semuaPaket = [];    // cache paket untuk edit
+    let paketEditId = null; // null = tambah, angka = edit
+
+    // =============== TAMU ===============
     async function loadData(){
       const tbody = document.querySelector('#tamuTable tbody');
-      tbody.innerHTML = '<tr><td colspan="7" class="small">Memuat data...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="9" class="small">Memuat data...</td></tr>';
+
       try {
         const res = await fetch(apiBase + '/admin/tamu');
-        if(!res.ok) throw new Error('Gagal memuat tamu');
         const data = await res.json();
-        if(!Array.isArray(data) || data.length === 0){
-          tbody.innerHTML = '<tr><td colspan="7" class="small">Belum ada tamu.</td></tr>';
+
+        if(!data.length){
+          tbody.innerHTML = '<tr><td colspan="9" class="small">Belum ada pendaftar.</td></tr>';
           return;
         }
+
         tbody.innerHTML = '';
+
         data.forEach(t => {
           const tr = document.createElement('tr');
           tr.innerHTML = `
@@ -206,201 +239,318 @@
             <td>${escapeHtml(t.kontak || '-')}</td>
             <td>${escapeHtml(t.wilayah?.nama || '-')}</td>
             <td>${escapeHtml(t.paket?.nama || '-')}</td>
+            <td>${escapeHtml(t.full_alamat || '-')}</td>
             <td>${escapeHtml(t.pesan)}</td>
-            <td>${t.lokasi ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(t.lokasi)}" target="_blank">Buka</a>` : '-'}</td>
+            <td>${t.lokasi ? `<a href="https://www.google.com/maps?q=${t.lokasi}" target="_blank">Buka</a>` : '-'}</td>
             <td class="small">${new Date(t.created_at).toLocaleString('id-ID')}</td>
+            <td><button class="btn-danger" onclick="hapusTamu(${t.id})">Hapus</button></td>
           `;
           tbody.appendChild(tr);
         });
-      } catch (err) {
-        console.error(err);
-        tbody.innerHTML = '<tr><td colspan="7" class="small">Gagal memuat data tamu.</td></tr>';
-      }
-    }
 
-    // ---------- Wilayah (CRUD) ----------
-    async function refreshWilayahList(){
-      const el = document.getElementById('wilayahList');
-      try {
-        const res = await fetch(apiBase + '/wilayah');
-        if(!res.ok) throw new Error('Gagal memuat wilayah');
-        const data = await res.json();
-        if(!Array.isArray(data) || data.length === 0){
-          el.innerHTML = '<div class="small">Belum ada wilayah.</div>';
-          populateWilayahSelect([]);
-          return;
-        }
-        el.innerHTML = data.map(w => `
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed #eef5ff">
-            <div><strong>${escapeHtml(w.nama)}</strong><div class="small">${escapeHtml(w.keterangan || '')}</div></div>
-            <div style="display:flex;gap:8px">
-              <button class="btn-ghost" onclick="hapusWilayah(${w.id})">Hapus</button>
-            </div>
-          </div>
-        `).join('');
-        populateWilayahSelect(data);
       } catch(err){
         console.error(err);
-        el.innerHTML = '<div class="small">Gagal memuat wilayah.</div>';
+        tbody.innerHTML = '<tr><td colspan="9" class="small">Gagal memuat data.</td></tr>';
       }
     }
 
-    function populateWilayahSelect(list){
-      const sel = document.getElementById('paket_wilayah');
-      sel.innerHTML = '';
-      list.forEach(w => {
-        const opt = document.createElement('option');
-        opt.value = w.id; opt.textContent = w.nama;
-        sel.appendChild(opt);
-      });
+    async function hapusTamu(id){
+      if(!confirm('Hapus data ini?')) return;
+      try {
+        const res = await fetch(apiBase + '/admin/tamu/' + id, {
+          method:'DELETE',
+          headers:{'X-CSRF-TOKEN':csrfToken}
+        });
+        if(res.ok){
+          alert('Data dihapus');
+          loadData();
+        } else {
+          alert('Gagal menghapus data.');
+        }
+      } catch(err){
+        alert('Gagal menghapus data');
+      }
+    }
+
+    // =============== WILAYAH ===============
+    async function refreshWilayahList(){
+      const el  = document.getElementById('wilayahList');
+      const box = document.getElementById('paket_wilayah_wrapper');
+
+      try {
+        const res = await fetch(apiBase + '/wilayah');
+        const data = await res.json();
+
+        if(!data.length){
+          el.innerHTML  = 'Belum ada wilayah.';
+          box.innerHTML = '<div class="small">Belum ada wilayah untuk paket.</div>';
+          return;
+        }
+
+        // list wilayah
+        el.innerHTML = data.map(w => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed #eef5ff">
+            <div>
+              <b>${escapeHtml(w.nama)}</b>
+              <div class="small">${escapeHtml(w.keterangan || '')}</div>
+            </div>
+            <button class="btn-ghost" onclick="hapusWilayah(${w.id})">Hapus</button>
+          </div>
+        `).join('');
+
+        // checkbox wilayah untuk paket
+        box.innerHTML = data.map(w => `
+          <label style="display:flex;align-items:center;gap:6px;margin-bottom:4px;cursor:pointer">
+            <input type="checkbox" class="chk-wilayah-paket" value="${w.id}">
+            <span>${escapeHtml(w.nama)}</span>
+          </label>
+        `).join('');
+
+      } catch(err){
+        console.error(err);
+        el.innerHTML  = 'Gagal memuat wilayah.';
+        box.innerHTML = '<div class="small">Gagal memuat daftar wilayah.</div>';
+      }
     }
 
     async function tambahWilayah(){
-      const nama = document.getElementById('wil_nama').value.trim();
-      const ket = document.getElementById('wil_ket').value.trim();
-      if(!nama){ alert('Nama wilayah wajib'); return; }
+      const nama = wil_nama.value.trim();
+      const ket  = wil_ket.value.trim();
+
+      if(!nama) return alert('Nama wilayah wajib diisi');
+
       try {
-        const res = await fetch(apiBase + '/wilayah', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json','X-CSRF-TOKEN': csrfToken},
-          body: JSON.stringify({nama: nama, keterangan: ket})
+        await fetch(apiBase + '/wilayah', {
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            'X-CSRF-TOKEN':csrfToken
+          },
+          body:JSON.stringify({nama, keterangan:ket})
         });
-        if(!res.ok) throw new Error('Gagal menambah wilayah');
-        document.getElementById('wil_nama').value = '';
-        document.getElementById('wil_ket').value = '';
-        alert('Wilayah ditambahkan');
+
+        wil_nama.value = '';
+        wil_ket.value  = '';
+
         refreshWilayahList();
       } catch(err){
-        console.error(err);
-        alert('Gagal menambah wilayah. Lihat console untuk detail.');
+        alert('Gagal menambah wilayah');
       }
     }
 
     async function hapusWilayah(id){
       if(!confirm('Hapus wilayah ini?')) return;
+
       try {
-        const res = await fetch(apiBase + '/wilayah/' + id, {
-          method: 'DELETE',
-          headers: {'X-CSRF-TOKEN': csrfToken}
+        await fetch(apiBase + '/wilayah/' + id, {
+          method:'DELETE',
+          headers:{'X-CSRF-TOKEN':csrfToken}
         });
-        if(!res.ok) throw new Error('Gagal menghapus');
-        alert('Wilayah dihapus');
+
         refreshWilayahList();
         loadPaketAdmin();
+
       } catch(err){
-        console.error(err);
-        alert('Gagal menghapus wilayah.');
+        alert('Gagal menghapus wilayah');
       }
     }
 
-    // ---------- Paket (CRUD) ----------
-async function tambahPaket(){
-  const nama = document.getElementById('paket_nama').value.trim();
-  const harga = parseFloat(document.getElementById('paket_harga').value);
-  const des = document.getElementById('paket_deskripsi').value.trim();
-  const sel = Array.from(document.getElementById('paket_wilayah').selectedOptions).map(o => parseInt(o.value));
-  if(!nama || isNaN(harga)){ alert('Nama dan harga wajib'); return; }
-
-  try {
-    const res = await fetch(apiBase + '/paket', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','X-CSRF-TOKEN': csrfToken},
-      body: JSON.stringify({nama: nama, harga: harga, deskripsi: des, wilayah_id: sel})
-    });
-
-    const data = await res.json().catch(()=>null);
-
-    if(!res.ok){
-      console.error('Error response', res.status, data);
-      if(res.status === 422 && data && data.errors){
-        const msgs = Object.values(data.errors).flat().join('\n');
-        alert('Validasi gagal:\n' + msgs);
-      } else if(data && data.message){
-        alert('Error: ' + data.message);
-      } else {
-        alert('Gagal menambah paket. Cek console atau laravel.log');
-      }
-      return;
+    // helper checkbox wilayah
+    function getCheckedWilayahIds(){
+      return Array.from(document.querySelectorAll('.chk-wilayah-paket:checked'))
+        .map(cb => parseInt(cb.value));
     }
 
-    document.getElementById('paket_nama').value = '';
-    document.getElementById('paket_harga').value = '';
-    document.getElementById('paket_deskripsi').value = '';
-    alert('Paket ditambahkan');
-    loadPaketAdmin();
-  } catch(err){
-    console.error(err);
-    alert('Gagal menambah paket. Lihat console untuk detail.');
-  }
-}
+    function setCheckedWilayahIds(ids){
+      const set = new Set((ids || []).map(Number));
+      document.querySelectorAll('.chk-wilayah-paket').forEach(cb => {
+        cb.checked = set.has(parseInt(cb.value));
+      });
+    }
 
+    // =============== PAKET ===============
+    async function simpanPaket(){
+      const nama  = paket_nama.value.trim();
+      const harga = paket_harga.value;
+      const des   = paket_deskripsi.value.trim();
+      const wilayah_id = getCheckedWilayahIds();
 
-    async function hapusPaketAdmin(id){
-      if(!confirm('Hapus paket ini?')) return;
+      if(!nama || !harga){
+        alert("Nama & harga wajib diisi.");
+        return;
+      }
+
+      const body = JSON.stringify({ nama, harga, deskripsi: des, wilayah_id });
+
+      // mode tambah
+      if(!paketEditId){
+        try {
+          const res = await fetch(apiBase + '/paket', {
+            method:'POST',
+            headers:{
+              'Content-Type':'application/json',
+              'X-CSRF-TOKEN': csrfToken
+            },
+            body
+          });
+
+          const data = await res.json().catch(()=>null);
+
+          if(!res.ok){
+            console.error('Error simpan paket', res.status, data);
+            if(res.status === 422 && data && data.errors){
+              alert(Object.values(data.errors).flat().join("\n"));
+            }else{
+              alert('Gagal menambah paket.');
+            }
+            return;
+          }
+
+          resetFormPaket();
+          loadPaketAdmin();
+          alert('Paket berhasil ditambahkan.');
+        } catch(err){
+          console.error(err);
+          alert('Gagal menambah paket.');
+        }
+        return;
+      }
+
+      // mode edit
       try {
-        const res = await fetch(apiBase + '/paket/' + id, {
-          method: 'DELETE',
-          headers: {'X-CSRF-TOKEN': csrfToken}
+        const res = await fetch(apiBase + '/paket/' + paketEditId, {
+          method:'PUT',
+          headers:{
+            'Content-Type':'application/json',
+            'X-CSRF-TOKEN': csrfToken
+          },
+          body
         });
-        if(!res.ok) throw new Error('Gagal menghapus paket');
-        alert('Paket dihapus');
+
+        const data = await res.json().catch(()=>null);
+
+        if(!res.ok){
+          console.error('Error update paket', res.status, data);
+          if(res.status === 422 && data && data.errors){
+            alert(Object.values(data.errors).flat().join("\n"));
+          }else{
+            alert('Gagal mengubah paket.');
+          }
+          return;
+        }
+
+        resetFormPaket();
         loadPaketAdmin();
+        alert('Paket berhasil diubah.');
+
       } catch(err){
         console.error(err);
-        alert('Gagal menghapus paket.');
+        alert('Gagal mengubah paket.');
       }
+    }
+
+    function resetFormPaket(){
+      paketEditId = null;
+      document.getElementById('paket_id_edit').value = '';
+      paket_nama.value      = '';
+      paket_harga.value     = '';
+      paket_deskripsi.value = '';
+      setCheckedWilayahIds([]);
+      const btn = document.getElementById('btnPaketSave');
+      if(btn) btn.textContent = 'Tambah Paket';
     }
 
     async function loadPaketAdmin(){
       const container = document.getElementById('paketAdminList');
-      container.innerHTML = '<div class="small">Memuat paket...</div>';
+      container.innerHTML = 'Memuat paket...';
+
       try {
-        const res = await fetch(apiBase + '/paket/wilayah/0');
-        if(!res.ok) throw new Error('Gagal memuat paket');
+        const res = await fetch(apiBase + '/paket');
         const data = await res.json();
-        if(!Array.isArray(data) || data.length === 0){
-          container.innerHTML = '<div class="small">Belum ada paket.</div>';
+
+        if (!Array.isArray(data) || data.length === 0) {
+          semuaPaket = [];
+          container.innerHTML = 'Belum ada paket.';
           return;
         }
-        // tampilkan kartu paket
-        const html = data.map(p => {
-          const wilayahInfo = (p.wilayah_id && p.wilayah_id.length) ? ('Tersedia di ' + p.wilayah_id.length + ' wilayah') : 'Tersedia di semua wilayah';
-          return `<div class="paket-card">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <div style="font-weight:800">${escapeHtml(p.nama)}</div>
-                <div class="paket-price">Rp ${Number(p.harga).toLocaleString('id-ID')}</div>
-              </div>
-              <div class="paket-desc">${escapeHtml(p.deskripsi || '')}</div>
-              <div class="small" style="margin-top:6px">${escapeHtml(wilayahInfo)}</div>
-            </div>
-            <div class="paket-actions">
-              <button class="btn-ghost" onclick="editPaket(${p.id})">Ubah</button>
-              <button class="btn-subscribe" onclick="hapusPaketAdmin(${p.id})">Hapus</button>
-            </div>
+
+        semuaPaket = data;
+
+        container.innerHTML = `
+          <div style="display:flex;flex-wrap:wrap">
+            ${data.map(p => {
+              let wilayahInfo = 'Semua wilayah';
+              if (Array.isArray(p.wilayah_id) && p.wilayah_id.length) {
+                wilayahInfo = p.wilayah_id.length + ' wilayah';
+              }
+
+              return `
+                <div class="paket-card">
+                  <div>
+                    <div style="display:flex;justify-content:space-between">
+                      <b>${escapeHtml(p.nama)}</b>
+                      <div class="paket-price">Rp ${Number(p.harga).toLocaleString('id-ID')}</div>
+                    </div>
+                    <div class="paket-desc">${escapeHtml(p.deskripsi || '')}</div>
+                    <div class="small" style="margin-top:6px">${escapeHtml(wilayahInfo)}</div>
+                  </div>
+                  <div class="paket-actions">
+                    <button class="btn-ghost" onclick="editPaket(${p.id})">Ubah</button>
+                    <button class="btn-danger" onclick="hapusPaketAdmin(${p.id})">Hapus</button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
           </div>`;
-        }).join('');
-        container.innerHTML = `<div style="display:flex;flex-wrap:wrap">${html}</div>`;
-      } catch(err){
+      } catch (err) {
         console.error(err);
-        container.innerHTML = '<div class="small">Gagal memuat paket.</div>';
+        container.innerHTML = 'Gagal memuat paket.';
       }
     }
 
     function editPaket(id){
-      alert('Fitur edit paket belum diimplementasikan di UI ini. Bisa ditambahkan bila diperlukan.');
+      const p = semuaPaket.find(x => x.id === id);
+      if(!p){
+        alert('Data paket tidak ditemukan.');
+        return;
+      }
+
+      paketEditId = p.id;
+      document.getElementById('paket_id_edit').value = p.id;
+
+      paket_nama.value      = p.nama || '';
+      paket_harga.value     = p.harga || '';
+      paket_deskripsi.value = p.deskripsi || '';
+
+      setCheckedWilayahIds(p.wilayah_id || []);
+
+      const btn = document.getElementById('btnPaketSave');
+      if(btn) btn.textContent = 'Simpan Perubahan';
     }
 
-    // ---------- util ----------
-    function escapeHtml(s){
-      if(!s && s !== 0) return '';
-      return String(s).replace(/[&<>"'`=\/]/g, function (c) {
-        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','/':'&#x2F;','`':'&#x60;','=':'&#x3D;'}[c];
-      });
+    async function hapusPaketAdmin(id){
+      if(!confirm('Hapus paket ini?')) return;
+
+      try {
+        await fetch(apiBase + '/paket/' + id, {
+          method:'DELETE',
+          headers:{'X-CSRF-TOKEN': csrfToken}
+        });
+        loadPaketAdmin();
+      } catch(err){
+        alert('Gagal menghapus paket');
+      }
     }
 
-    // ---------- init ----------
-    document.addEventListener('DOMContentLoaded', function(){
+    // util
+    function escapeHtml(str){
+      if(!str) return '';
+      return String(str).replace(/[&<>"'`=\/]/g, s => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','/':'&#x2F;','`':'&#x60;','=':'&#x3D;'
+      }[s]));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
       loadData();
       refreshWilayahList();
       loadPaketAdmin();

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Paket extends Model
@@ -15,7 +17,16 @@ class Paket extends Model
     ];
 
     protected $casts = [
-        'wilayah_id' => 'array',
-        'harga' => 'decimal:2',
+        'wilayah_id' => 'array'
     ];
+
+    public function wilayah()
+    {
+        return $this->belongsTo(Wilayah::class, 'wilayah_id');
+    }
+
+    public function tamu()
+    {
+        return $this->hasMany(Tamu::class);
+    }
 }

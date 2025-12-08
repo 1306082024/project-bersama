@@ -8,19 +8,22 @@ use App\Http\Controllers\ApiController;
 | API Routes
 |--------------------------------------------------------------------------
 | Semua rute API (stateless, via prefix /api) didefinisikan di sini.
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 */
 
-
+// PENDAFTAR 
 Route::post('/tamu', [ApiController::class, 'simpanTamu']);
 Route::get('/admin/tamu', [ApiController::class, 'daftarTamuAdmin']);
+Route::delete('/admin/tamu/{id}', [ApiController::class, 'hapusTamuAdmin']);
 
-
-// admin
+// WILAYAH
 Route::get('/wilayah', [ApiController::class, 'daftarWilayah']);
-Route::post('/wilayah', [ApiController::class, 'simpanWilayah']);     
+Route::post('/wilayah', [ApiController::class, 'simpanWilayah']);
 Route::delete('/wilayah/{id}', [ApiController::class, 'hapusWilayah']);
 
-Route::post('/paket', [ApiController::class, 'simpanPaket']);         
-Route::get('/paket/wilayah/{wilayahId?}', [ApiController::class, 'paketBerdasarkanWilayah']);
+// PAKET
+Route::get('/paket', [ApiController::class, 'daftarSemuaPaket']); // semua paket
+Route::get('/paket/wilayah/{wilayahId?}', [ApiController::class, 'paketBerdasarkanWilayah']); // frontend
+Route::post('/paket', [ApiController::class, 'simpanPaket']);
+Route::put('/paket/{id}', [ApiController::class, 'updatePaket']);
 Route::delete('/paket/{id}', [ApiController::class, 'hapusPaket']);
