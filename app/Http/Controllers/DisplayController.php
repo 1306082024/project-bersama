@@ -11,6 +11,11 @@ class DisplayController extends Controller
         return view('beranda'); // pastikan file resources/views/beranda.blade.php ada
     }
 
+    public function iptv()
+    {
+        return view('landing page IPTV'); // pastikan file resources/views/beranda.blade.php ada
+    }
+
     public function restoran()
     {
         return view('restoran.restoran'); // pastikan file resources/views/beranda.blade.php ada

@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/beranda', [DisplayController::class, 'beranda'])->name('beranda');
+Route::get('/iptv', [DisplayController::class, 'iptv'])->name('iptv');
 Route::get('/restoran', [DisplayController::class, 'restoran'])->name('restoran.restoran');
 Route::get('/layanan', [DisplayController::class, 'layanan'])->name('layanan.layanan');
 Route::get('/fasilitas', [DisplayController::class, 'fasilitas'])->name('fasilitas.fasilitas');
