@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', function () {
-   return view('landing page IPTV');
+   return view('auth.login');
 });
 
 Route::get('/beranda', function () {
@@ -35,6 +35,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/beranda', [DisplayController::class, 'beranda'])->name('beranda');
+
+Route::middleware(['auth', 'role:super admin'])->group(function () {
+    Route::get('/db_sp_admin', [DisplayController::class, 'db_sp_admin'])
+        ->name('db_sp_admin');
+});
+
 Route::get('/iptv', [DisplayController::class, 'iptv'])->name('iptv');
 Route::get('/restoran', [DisplayController::class, 'restoran'])->name('restoran.restoran');
 Route::get('/layanan', [DisplayController::class, 'layanan'])->name('layanan.layanan');
