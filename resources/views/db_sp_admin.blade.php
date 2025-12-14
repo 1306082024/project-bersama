@@ -13,10 +13,11 @@
 <div class="flex min-h-screen">
 
     <!-- SIDEBAR -->
-    <aside class="w-72 bg-gray-900/70 backdrop-blur-xl shadow-2xl p-6 flex flex-col justify-between 
-                 border-r border-gray-700">
+    <aside
+        class="w-72 bg-gray-900/70 backdrop-blur-xl shadow-2xl p-6 flex flex-col justify-between 
+               border-r border-gray-700 transition-shadow duration-500 hover:shadow-indigo-500/20">
 
-        <!-- LOGO / TITLE -->
+        <!-- LOGO -->
         <div>
             <h2 class="text-3xl font-extrabold text-indigo-400 mb-10 tracking-wide">
                 SUPER ADMIN
@@ -25,34 +26,64 @@
             <!-- MENU -->
             <nav class="space-y-3 text-gray-300">
 
-                <a href="#" 
-                   class="flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-600/20 
-                          hover:text-indigo-300 transition">
-                    🚀 <span class="text-lg">Dashboard</span>
+                <!-- DASHBOARD -->
+                <a href="#"
+                   class="group flex items-center gap-3 p-3 rounded-xl
+                          bg-indigo-600/20 text-indigo-300
+                          shadow-lg shadow-indigo-500/20
+                          transition-all duration-300">
+                    <img src="https://img.icons8.com/fluency/48/dashboard-layout.png"
+                         class="w-6 h-6 transition-transform duration-300 
+                                group-hover:scale-125 group-hover:rotate-6">
+                    <span class="text-lg">Dashboard</span>
                 </a>
 
-                <a href="#" 
-                   class="flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-600/20 
-                          hover:text-indigo-300 transition">
-                    🧑‍💼 <span class="text-lg">Kelola Admin</span>
+                <!-- DATA PENGGUNA -->
+                <a href="{{ route('super.admin.users.index') }}"
+                   class="group flex items-center gap-3 p-3 rounded-xl
+                          hover:bg-indigo-600/20 hover:text-indigo-300
+                          hover:shadow-lg hover:shadow-indigo-500/20
+                          transition-all duration-300">
+                    <img src="https://img.icons8.com/fluency/48/conference.png"
+                         class="w-6 h-6 transition-transform duration-300 
+                                group-hover:scale-125 group-hover:-rotate-6">
+                    <span class="text-lg">Data Pengguna</span>
                 </a>
 
-                <a href="#" 
-                   class="flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-600/20 
-                          hover:text-indigo-300 transition">
-                    🧑‍🤝‍🧑 <span class="text-lg">Data Pengguna</span>
+                <!-- KELOLA RUANGAN -->
+                <a href="#"
+                   class="group flex items-center gap-3 p-3 rounded-xl
+                          hover:bg-indigo-600/20 hover:text-indigo-300
+                          hover:shadow-lg hover:shadow-indigo-500/20
+                          transition-all duration-300">
+                    <img src="https://img.icons8.com/fluency/48/manager.png"
+                         class="w-6 h-6 transition-transform duration-300 
+                                group-hover:scale-125 group-hover:rotate-6">
+                    <span class="text-lg">Kelola Ruangan</span>
                 </a>
 
-                <a href="#" 
-                   class="flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-600/20 
-                          hover:text-indigo-300 transition">
-                    📡 <span class="text-lg">IPTV Control</span>
+                <!-- TAMU & PERANGKAT -->
+                <a href="#"
+                   class="group flex items-center gap-3 p-3 rounded-xl
+                          hover:bg-indigo-600/20 hover:text-indigo-300
+                          hover:shadow-lg hover:shadow-indigo-500/20
+                          transition-all duration-300">
+                    <img src="https://img.icons8.com/fluency/48/wifi.png"
+                         class="w-6 h-6 transition-transform duration-300 
+                                group-hover:scale-125 group-hover:-rotate-6">
+                    <span class="text-lg">Tamu dan Perangkat</span>
                 </a>
 
-                <a href="#" 
-                   class="flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-600/20 
-                          hover:text-indigo-300 transition">
-                    ⚙️ <span class="text-lg">Pengaturan Sistem</span>
+                <!-- PESAN MAKANAN -->
+                <a href="#"
+                   class="group flex items-center gap-3 p-3 rounded-xl
+                          hover:bg-indigo-600/20 hover:text-indigo-300
+                          hover:shadow-lg hover:shadow-indigo-500/20
+                          transition-all duration-300">
+                    <img src="https://img.icons8.com/color/48/meal.png"
+                         class="w-6 h-6 transition-transform duration-300 
+                                group-hover:scale-125 group-hover:-rotate-12">
+                    <span class="text-lg">Pesan Makanan</span>
                 </a>
 
             </nav>
@@ -62,10 +93,12 @@
         <div class="pt-6 border-t border-gray-700">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button 
-                    class="flex items-center gap-3 w-full p-3 text-red-400 hover:bg-red-500/20 
-                           hover:text-red-300 rounded-xl font-semibold transition">
-                    🚪 Logout
+                <button
+                    class="group flex items-center gap-3 w-full p-3 text-red-400
+                           hover:bg-red-500/20 hover:text-red-300
+                           rounded-xl font-semibold transition-all duration-300">
+                    <span class="transition-transform duration-300 group-hover:translate-x-1">🚪</span>
+                    Logout
                 </button>
             </form>
         </div>
@@ -80,17 +113,25 @@
 
             <div>
                 <h1 class="text-4xl font-extrabold text-indigo-400 drop-shadow">
-                    Panel Super Admin
+                    Panel {{ ucfirst(Auth::user()->role) }}
                 </h1>
                 <p class="text-gray-400 mt-1">Kontrol penuh sistem IPTV Hotel</p>
             </div>
 
-            <div class="flex items-center gap-4 bg-gray-900/70 px-5 py-3 rounded-2xl shadow-lg border border-gray-700">
+            <!-- PROFILE -->
+            <div
+                class="flex items-center gap-4 bg-gray-900/70 px-5 py-3 rounded-2xl 
+                       shadow-lg border border-gray-700">
                 <div class="text-right">
-                    <p class="font-bold text-gray-100 text-lg">{{ Auth::user()->name }}</p>
-                    <p class="text-sm text-indigo-400">{{ Auth::user()->role }}</p>
+                    <p class="font-bold text-gray-100 text-lg">
+                        {{ Auth::user()->name }}
+                    </p>
+                    <p class="text-sm text-indigo-400 capitalize">
+                        {{ Auth::user()->role }}
+                    </p>
                 </div>
-                <img src="https://i.pravatar.cc/60" class="rounded-full w-14 h-14 shadow-lg border border-gray-700">
+                <img src="https://i.pravatar.cc/60?u={{ Auth::user()->email }}"
+                     class="rounded-full w-14 h-14 shadow-lg border border-gray-700">
             </div>
 
         </header>
@@ -98,28 +139,31 @@
         <!-- CARDS -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
 
-            <!-- CARD -->
-            <div class="bg-gradient-to-br from-indigo-600 to-indigo-400 shadow-xl p-6 rounded-2xl 
-                        hover:scale-105 transition transform duration-200">
+            <div
+                class="bg-gradient-to-br from-indigo-600 to-indigo-400 shadow-xl p-6 rounded-2xl 
+                       hover:scale-105 transition-transform duration-300">
                 <h3 class="text-lg font-semibold text-white">Total Pengguna</h3>
                 <p class="text-5xl font-extrabold text-white mt-3">523</p>
             </div>
 
-            <div class="bg-gradient-to-br from-purple-600 to-purple-400 shadow-xl p-6 rounded-2xl 
-                        hover:scale-105 transition">
-                <h3 class="text-lg font-semibold text-white">Admin Aktif</h3>
+            <div
+                class="bg-gradient-to-br from-purple-600 to-purple-400 shadow-xl p-6 rounded-2xl 
+                       hover:scale-105 transition-transform duration-300">
+                <h3 class="text-lg font-semibold text-white">Kelola Ruangan</h3>
                 <p class="text-5xl font-extrabold text-white mt-3">14</p>
             </div>
 
-            <div class="bg-gradient-to-br from-pink-600 to-pink-400 shadow-xl p-6 rounded-2xl 
-                        hover:scale-105 transition">
-                <h3 class="text-lg font-semibold text-white">Server Status</h3>
+            <div
+                class="bg-gradient-to-br from-pink-600 to-pink-400 shadow-xl p-6 rounded-2xl 
+                       hover:scale-105 transition-transform duration-300">
+                <h3 class="text-lg font-semibold text-white">Tamu & Perangkat</h3>
                 <p class="text-5xl font-extrabold text-white mt-3">99%</p>
             </div>
 
-            <div class="bg-gradient-to-br from-teal-600 to-teal-400 shadow-xl p-6 rounded-2xl 
-                        hover:scale-105 transition">
-                <h3 class="text-lg font-semibold text-white">Layanan Aktif</h3>
+            <div
+                class="bg-gradient-to-br from-teal-600 to-teal-400 shadow-xl p-6 rounded-2xl 
+                       hover:scale-105 transition-transform duration-300">
+                <h3 class="text-lg font-semibold text-white">Pesanan Makanan</h3>
                 <p class="text-5xl font-extrabold text-white mt-3">37</p>
             </div>
 

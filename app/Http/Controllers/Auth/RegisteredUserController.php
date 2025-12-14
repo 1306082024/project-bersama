@@ -32,13 +32,13 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'role' => ['required', 'in:super admin, display'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
-            'role' => $request->role, 
+            'role' => $request->role,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -47,6 +47,14 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('db_sp_admin');
+        if ($user->role === 'super admin') {
+            return redirect()->route('super.admin.dashboard');
+        }
+
+        if ($user->role === 'display') {
+            return redirect()->route('display.dashboard');
+        }
+
+        return redirect()->route('login');
     }
 }
