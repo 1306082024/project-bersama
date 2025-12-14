@@ -22,7 +22,7 @@
 
             <nav class="space-y-3 text-gray-300">
 
-                <a href="{{ route('db_sp_admin') }}"
+                <a href="{{ route('super.admin.dashboard') }}"
                    class="group flex items-center gap-3 p-3 rounded-xl
                    {{ request()->routeIs('db_sp_admin') 
                       ? 'bg-indigo-600/20 text-indigo-300 shadow-lg shadow-indigo-500/20'
@@ -33,7 +33,7 @@
                     <span>Dashboard</span>
                 </a>
 
-                <a href="{{ route('pengguna.index') }}"
+                <a href="{{ route('super.admin.users.index') }}"
                    class="group flex items-center gap-3 p-3 rounded-xl
                    {{ request()->routeIs('users.*') 
                       ? 'bg-indigo-600/20 text-indigo-300 shadow-lg shadow-indigo-500/20'

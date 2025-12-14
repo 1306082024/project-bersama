@@ -14,7 +14,7 @@
 
 {{-- TOMBOL TAMBAH USER --}}
 <div class="flex justify-end mb-5">
-    <a href="{{ route('users.create') }}"
+    <a href="{{ route('super.admin.users.create') }}"
        class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-xl font-semibold transition">
         ➕ Tambah User
     </a>
@@ -67,14 +67,14 @@
                     <div class="flex justify-center gap-2">
 
                         {{-- EDIT --}}
-                        <a href="{{ route('users.edit', $user) }}"
+                        <a href="{{ route('super.admin.users.edit', $user) }}"
                            class="px-4 py-2 bg-yellow-500/20 text-yellow-400 
                                   rounded-lg hover:bg-yellow-500/30 transition">
                             ✏️ Edit
                         </a>
 
                         {{-- DELETE --}}
-                        <form method="POST" action="{{ route('users.destroy', $user) }}"
+                        <form method="POST" action="{{ route('super.admin.users.destroy', $user) }}"
                               onsubmit="return confirm('Yakin ingin menghapus user ini?')">
                             @csrf
                             @method('DELETE')

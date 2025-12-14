@@ -4,7 +4,7 @@
 @section('subheader', 'Perbarui data pengguna')
 
 @section('content')
-<form method="POST" action="{{ route('users.update', $user) }}"
+<form method="POST" action="{{ route('super.admin.users.update', $user) }}"
       class="bg-gray-900/70 p-6 rounded-2xl border border-gray-700 space-y-4">
     @csrf
     @method('PUT')

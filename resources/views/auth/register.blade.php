@@ -5,7 +5,7 @@
             <!-- Logo -->
             <div class="text-center mb-5 animate-pop">
                 <img src="https://cdn-icons-png.flaticon.com/512/5968/5968814.png" class="w-20 mx-auto opacity-90" />
-                <h2 class="text-2xl font-semibold text-gray-800 mt-3">Register Admin IPTV</h2>
+                <h2 class="text-2xl font-semibold text-gray-800 mt-3">Register Super Admin IPTV</h2>
             </div>
 
             <form method="POST" action="{{ route('register') }}" class="space-y-5">
