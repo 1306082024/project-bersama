@@ -16,12 +16,27 @@ Route::get('/beranda', function () {
    return view('beranda');
 });
 
-Route::get('/Pendaftaran', function () {
-   return view('Pendaftaran');
+Route::get('/pendaftaran', function () {
+   return view('formulirpendaftaran.pendaftaran');
 });
 
-Route::get('/aP', function () {
-   return view('adminP');
+Route::get('/tes', function () {
+   return view('formulirpendaftaran.admin.dashboard');
+});
+Route::get('/data-pendaftar', function () {
+   return view('formulirpendaftaran.admin.data-pendaftar');
+});
+Route::get('/pelanggan', function () {
+   return view('formulirpendaftaran.admin.pelanggan');
+});
+Route::get('/wilayah1', function () {
+   return view('formulirpendaftaran.admin.wilayah');
+});
+Route::get('/paket', function () {
+   return view('formulirpendaftaran.admin.paket');
+});
+Route::get('/pengaturan', function () {
+   return view('formulirpendaftaran.admin.pengaturan');
 });
 
 Route::get('/dashboard', function () {
