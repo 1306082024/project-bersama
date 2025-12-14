@@ -1,12 +1,17 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DisplayController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ApiController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+/*
+|--------------------------------------------------------------------------
+| ROOT (AUTO REDIRECT SESUAI ROLE)
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
    return view('landing page IPTV');
@@ -17,26 +22,11 @@ Route::get('/beranda', function () {
 });
 
 Route::get('/pendaftaran', function () {
-   return view('formulirpendaftaran.pendaftaran');
+   return view('pendaftaran');
 });
 
-Route::get('/tes', function () {
-   return view('formulirpendaftaran.admin.dashboard');
-});
-Route::get('/data-pendaftar', function () {
-   return view('formulirpendaftaran.admin.data-pendaftar');
-});
-Route::get('/pelanggan', function () {
-   return view('formulirpendaftaran.admin.pelanggan');
-});
-Route::get('/wilayah1', function () {
-   return view('formulirpendaftaran.admin.wilayah');
-});
-Route::get('/paket', function () {
-   return view('formulirpendaftaran.admin.paket');
-});
-Route::get('/pengaturan', function () {
-   return view('formulirpendaftaran.admin.pengaturan');
+Route::get('/aP', function () {
+   return view('adminP');
 });
 
 Route::get('/dashboard', function () {
@@ -49,22 +39,74 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+/*
+|--------------------------------------------------------------------------
+| PUBLIC / DISPLAY CONTENT
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/beranda', [DisplayController::class, 'beranda'])->name('beranda');
+Route::get('/iptv', [DisplayController::class, 'iptv'])->name('iptv');
 Route::get('/restoran', [DisplayController::class, 'restoran'])->name('restoran.restoran');
 Route::get('/layanan', [DisplayController::class, 'layanan'])->name('layanan.layanan');
 Route::get('/fasilitas', [DisplayController::class, 'fasilitas'])->name('fasilitas.fasilitas');
 Route::get('/tvnfilm', [DisplayController::class, 'tvnfilm'])->name('tvnfilm.tvnfilm');
 Route::get('/yt', [DisplayController::class, 'yt'])->name('yt.yt');
 
+/*
+|--------------------------------------------------------------------------
+| AUTH USER (SEMUA ROLE)
+|--------------------------------------------------------------------------
+*/
 
+Route::middleware('auth')->group(function () {
 
-use App\Http\Controllers\ApiController;
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| SUPER ADMIN ONLY
 |--------------------------------------------------------------------------
-| Semua rute API (stateless, via prefix /api) didefinisikan di sini.
+*/
+
+Route::middleware(['auth', 'role:super admin'])
+    ->prefix('super-admin')
+    ->name('super.admin.')
+    ->group(function () {
+
+        Route::get('/dashboard', fn() => view('db_sp_admin'))
+            ->name('dashboard');
+
+        Route::resource('users', UserController::class);
+    });
+
+Route::middleware(['auth', 'role:super admin'])
+    ->prefix('super-admin')
+    ->name('super.admin.')
+    ->group(function () {
+
+        Route::resource('rooms', RoomController::class);
+    });
+
+
+/*
+|--------------------------------------------------------------------------
+| DISPLAY ONLY
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'role:display'])->group(function () {
+
+    Route::get('/display', fn() => view('landing page IPTV'))
+        ->name('display.dashboard');
+});
+
+/*
+|--------------------------------------------------------------------------
+| API (WEB)
 |--------------------------------------------------------------------------
 */
 
@@ -73,9 +115,12 @@ Route::get('/paket/wilayah/{wilayahId?}', [ApiController::class, 'paketBerdasark
 Route::post('/tamu', [ApiController::class, 'simpanTamu']);
 Route::get('/admin/tamu', [ApiController::class, 'daftarTamuAdmin']);
 
-// TEST ROUTE (untuk memastikan API terbaca)
-Route::get('/test-api', function () {
-    return 'API TERBACA';
-});
+Route::get('/test-api', fn() => 'API TERBACA');
 
-require __DIR__.'/auth.php';
+/*
+|--------------------------------------------------------------------------
+| AUTH BREEZE
+|--------------------------------------------------------------------------
+*/
+
+require __DIR__ . '/auth.php';

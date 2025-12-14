@@ -321,7 +321,7 @@
     <nav class="navbar">
         <div class="brand">
             <img src="{{ asset('images/gintara.png') }}" />
-            <span>GINTARA.NET</span>
+            <span>IPTV</span>
         </div>
 
         <div style="display:flex; align-items:center; gap:22px;">
@@ -337,11 +337,11 @@
 
         <div style="display:flex; justify-content:center; align-items:center; gap:12px; animation: fadeUp 1.4s;">
             <img src="{{ asset('images/gintara.png') }}" style="width:45px;">
-            <h2 style="font-size:34px; font-weight:600; margin:0;">Gintara IPTV</h2>
+            <h2 style="font-size:34px; font-weight:600; margin:0;">IPTV</h2>
         </div>
 
         <p style="font-size:15px; opacity:0.8; animation: fadeUp 1.6s;">
-            Layanan hiburan digital dari Gintara.NET untuk pengalaman streaming stabil dan tanpa buffering.
+            Layanan hiburan digital dari untuk pengalaman streaming stabil dan tanpa buffering.
         </p>
 
         <div style="margin-top:30px; display:flex; justify-content:center;">
@@ -378,7 +378,7 @@
             <div class="main-home-card" style="animation: slideUp 0.9s;">
                 <img src="https://img.icons8.com/ios-filled/100/home.png" />
                 <h3>BERANDA</h3>
-                <p style="font-size: 13px;">Halaman utama layanan GINTARA.NET</p>
+                <p style="font-size: 13px;">Halaman utama layanan</p>
             </div>
         </a>
 
