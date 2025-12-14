@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
+            $table->string('no_kamar')->unique();
+            $table->string('tipe_kamar');
+            $table->enum('status', ['kosong', 'terisi', 'maintenance'])->default('kosong');
             $table->timestamps();
         });
     }

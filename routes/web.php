@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DisplayController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ApiController;
 
 /*
@@ -49,7 +50,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
 });
 
 /*
@@ -63,11 +63,20 @@ Route::middleware(['auth', 'role:super admin'])
     ->name('super.admin.')
     ->group(function () {
 
-        Route::get('/dashboard', fn () => view('db_sp_admin'))
+        Route::get('/dashboard', fn() => view('db_sp_admin'))
             ->name('dashboard');
 
         Route::resource('users', UserController::class);
-});
+    });
+
+Route::middleware(['auth', 'role:super admin'])
+    ->prefix('super-admin')
+    ->name('super.admin.')
+    ->group(function () {
+
+        Route::resource('rooms', RoomController::class);
+    });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -77,7 +86,7 @@ Route::middleware(['auth', 'role:super admin'])
 
 Route::middleware(['auth', 'role:display'])->group(function () {
 
-    Route::get('/display', fn () => view('landing page IPTV'))
+    Route::get('/display', fn() => view('landing page IPTV'))
         ->name('display.dashboard');
 });
 
@@ -92,7 +101,7 @@ Route::get('/paket/wilayah/{wilayahId?}', [ApiController::class, 'paketBerdasark
 Route::post('/tamu', [ApiController::class, 'simpanTamu']);
 Route::get('/admin/tamu', [ApiController::class, 'daftarTamuAdmin']);
 
-Route::get('/test-api', fn () => 'API TERBACA');
+Route::get('/test-api', fn() => 'API TERBACA');
 
 /*
 |--------------------------------------------------------------------------
@@ -100,4 +109,4 @@ Route::get('/test-api', fn () => 'API TERBACA');
 |--------------------------------------------------------------------------
 */
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

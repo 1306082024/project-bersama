@@ -51,7 +51,7 @@
                 </a>
 
                 <!-- KELOLA RUANGAN -->
-                <a href="#"
+                <a href="{{ route('super.admin.rooms.index') }}"
                    class="group flex items-center gap-3 p-3 rounded-xl
                           hover:bg-indigo-600/20 hover:text-indigo-300
                           hover:shadow-lg hover:shadow-indigo-500/20
