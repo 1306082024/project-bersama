@@ -245,7 +245,7 @@
     </div>
 
     <div class="hero-cta">
-      <button class="btn btn-primary" onclick="goToSlide(1)">Isi Sekarang</button>
+      <button class="btn btn-primary" onclick="goToSlide(1)">Pasang Sekarang</button>
       <button class="btn btn-ghost" onclick="goToSlide(2)">Lihat Paket</button>
     </div>
   </div>
@@ -584,21 +584,21 @@
     });
   }
 
-  function goToSlide(n){
-    document.querySelectorAll('.slide').forEach(x => x.classList.add('hidden'));
-    const target = document.getElementById('slide-'+n);
-    if(target) {
-      target.classList.remove('hidden');
-      const area = target.querySelector('.slide-area');
-      if(area) area.scrollTop = 0;
-      if(n === 3){
-        const firstInput = target.querySelector('input, textarea, select');
-        if(firstInput) firstInput.focus();
+    function goToSlide(n){
+      document.querySelectorAll('.slide').forEach(x => x.classList.add('hidden'));
+      const target = document.getElementById('slide-'+n);
+
+      if(target) {
+        target.classList.remove('hidden');
+
+        if(n === 3){
+          setLocationAuto();
+        }
       }
+
+      setActiveStep(n);
+      if(n === 2) loadPaket();
     }
-    setActiveStep(n);
-    if(n === 2) loadPaket();
-  }
 
   async function loadWilayah(){
     const sel = document.getElementById('wilayahSelect');
@@ -658,22 +658,35 @@
     goToSlide(3);
   }
 
-  function setLocation(){
-    const status = document.getElementById('locStatus');
-    if(!navigator.geolocation){
-      status.textContent = 'Geolocation tidak tersedia';
-      return;
-    }
-    status.textContent = 'Mengambil lokasi...';
-    navigator.geolocation.getCurrentPosition(pos=>{
-      const s = pos.coords.latitude + ',' + pos.coords.longitude;
-      document.getElementById('guestForm').dataset.lokasi = s;
-      status.textContent = 'Lokasi diset: ' + s;
-    },err=>{
-      status.textContent = 'Gagal mengambil lokasi: ' + err.message;
-    }, {enableHighAccuracy:true, timeout:10000});
+function setLocationAuto(){
+  const status = document.getElementById('locStatus');
+
+  if (!navigator.geolocation) {
+    status.textContent = 'Browser tidak mendukung lokasi.';
+    return;
   }
 
+  status.textContent = 'Mengambil lokasi otomatis…';
+
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const lokasi = lat + ',' + lng;
+
+      document.getElementById('guestForm').dataset.lokasi = lokasi;
+      status.textContent = 'Lokasi berhasil terdeteksi.';
+    },
+    err => {
+      status.textContent = 'Lokasi tidak diizinkan atau gagal.';
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 60000
+    }
+  );
+}
   function buildFullAddress(){
     const jalan = document.getElementById('alamat_jalan').value;
     const rt = document.getElementById('rt').value;

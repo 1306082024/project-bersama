@@ -267,4 +267,19 @@ class ApiController extends Controller
             'ok' => true
         ]);
     }
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|string'
+        ]);
+
+        $tamu = Tamu::findOrFail($id);
+        $tamu->status = $request->status;
+        $tamu->save();
+
+        return response()->json([
+            'success' => true,
+            'status' => $tamu->status
+        ]);
+    }
 }

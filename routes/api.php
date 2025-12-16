@@ -12,6 +12,7 @@ use App\Http\Controllers\ApiController;
 */
 
 // PENDAFTAR 
+Route::patch('/admin/tamu/{id}/status', [ApiController::class, 'updateStatus']);
 Route::post('/tamu', [ApiController::class, 'simpanTamu']);
 Route::get('/admin/tamu', [ApiController::class, 'daftarTamuAdmin']);
 Route::delete('/admin/tamu/{id}', [ApiController::class, 'hapusTamuAdmin']);
