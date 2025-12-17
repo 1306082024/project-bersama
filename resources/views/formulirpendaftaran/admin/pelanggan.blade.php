@@ -91,7 +91,7 @@
         <span class="nav-icon">📊</span> Dashboard
       </a>
       <a href="data-pendaftar" class="nav-item">
-        <span class="nav-icon">📝</span> Pendaftaran
+        <span class="nav-icon">📝</span> Data Pendaftar
       </a>
       <a href="pelanggan" class="nav-item active">
         <span class="nav-icon">👥</span> Data Pelanggan

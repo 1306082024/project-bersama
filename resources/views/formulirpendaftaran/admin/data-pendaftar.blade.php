@@ -187,7 +187,7 @@ th{
 
 <header class="header">
   <div>
-    <h1>Data Pendaftaran Baru</h1>
+    <h1>Data Pendaftar Baru</h1>
     <p style="color:#6b7280;font-size:14px">
       Kelola pendaftar dan update status dari panel ini.
     </p>
