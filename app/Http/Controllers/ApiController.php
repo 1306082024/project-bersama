@@ -51,6 +51,26 @@ class ApiController extends Controller
         ], 201);
     }
 
+    public function updateWilayah(Request $r, $id)
+    {
+        $w = Wilayah::findOrFail($id);
+
+        $r->validate([
+            'nama' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:wilayah,slug,'.$id,
+            'keterangan' => 'nullable|string'
+        ]);
+
+        $w->update([
+            'nama' => $r->nama,
+            'slug' => $r->slug ?: Str::slug($r->nama),
+            'keterangan' => $r->keterangan
+        ]);
+
+        return response()->json(['ok'=>true]);
+    }
+
+
     // DELETE /api/wilayah/{id}
     public function hapusWilayah($id)
     {
@@ -282,4 +302,49 @@ class ApiController extends Controller
             'status' => $tamu->status
         ]);
     }
+
+    // ==============================
+// PELANGGAN
+// ==============================
+public function daftarPelanggan()
+{
+    return response()->json(
+        Tamu::with(['paket','wilayah'])
+            ->where('status', 'Terpasang')
+            ->orderByDesc('created_at')
+            ->get()
+            ->map(function ($t) {
+                return [
+                    'id'           => $t->id,
+                    'nama'         => $t->nama,
+                    'kontak'       => $t->kontak,
+                    'email'        => $t->email,
+                    'alamat'       => $t->full_alamat,
+                    'paket'        => $t->paket?->nama,
+                    'jatuh_tempo'  => 10,
+                    'status'       => 'Aktif',
+                    'lokasi'       => $t->lokasi,
+                ];
+            })
+    );
+}
+
+public function tugasTeknisi(){
+    return response()->json(
+        Tamu::with('paket')
+            ->whereIn('status',['Menunggu Instalasi','Terpasang'])
+            ->orderBy('created_at')
+            ->get()
+    );
+}
+
+public function selesaiInstalasi($id){
+    $t = Tamu::findOrFail($id);
+    $t->status = 'Terpasang';
+    $t->save();
+
+    return response()->json(['ok'=>true]);
+}
+
+
 }

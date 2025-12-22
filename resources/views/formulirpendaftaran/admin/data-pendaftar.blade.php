@@ -42,33 +42,50 @@ body{
   height:100%;
   top:0;left:0
 }
-.nav{padding:20px 16px}
-.nav-item{
-  display:flex;
-  align-items:center;
-  padding:12px;
-  border-radius:8px;
-  color:var(--text-muted);
-  text-decoration:none;
-  margin-bottom:4px;
-  font-size:14px
-}
-.nav-item.active{
-  background:var(--primary);
-  color:#fff
-}
-.nav-icon{
-  margin-right:12px;
-  width:20px;
-  text-align:center
-}
-.nav-label{
-  font-size:11px;
-  text-transform:uppercase;
-  color:#9ca3af;
-  margin:20px 0 8px 12px
-}
+    .nav {
+      padding: 20px 16px;
+      flex: 1;
+    }
 
+    .nav-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      margin-left: 12px;
+      font-weight: 600;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .nav-item:hover {
+      background: #f0f7ff;
+      color: var(--primary);
+    }
+
+    .nav-item.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(11, 111, 214, 0.2);
+    }
+
+    .nav-icon {
+      margin-right: 12px;
+      width: 20px;
+      text-align: center;
+    }
 /* ===== MAIN ===== */
 .main{
   margin-left:var(--sidebar-width);
@@ -155,31 +172,30 @@ th{
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-  <nav class="nav">
-    <a href="tes" class="nav-item">
-      <span class="nav-icon">📊</span> Dashboard
-    </a>
-    <a href="data-pendaftar" class="nav-item active">
-      <span class="nav-icon">📝</span> Data Pendaftar
-    </a>
-    <a href="pelanggan" class="nav-item">
-      <span class="nav-icon">👥</span> Data Pelanggan
-    </a>
-    <a href="wilayah1" class="nav-item">
-      <span class="nav-icon">🌍</span> Kelola Wilayah
-    </a>
-    <a href="paket" class="nav-item">
-      <span class="nav-icon">📦</span> Paket Internet
-    </a>
-
-    <div class="nav-label">Settings</div>
-    <a href="pengaturan" class="nav-item">
-      <span class="nav-icon">⚙️</span> Pengaturan
-    </a>
-    <a href="#" class="nav-item">
-      <span class="nav-icon">🚪</span> Logout
-    </a>
-  </nav>
+    <nav class="nav">
+      <a href="dashboardA" class="nav-item">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+      <a href="data-pendaftar" class="nav-item active">
+        <span class="nav-icon">📝</span> Data Pendaftar
+      </a>
+      <a href="pelanggan" class="nav-item">
+        <span class="nav-icon">👥</span> Data Pelanggan
+      </a>
+      <a href="wilayah" class="nav-item">
+        <span class="nav-icon">🌍</span> Kelola Wilayah
+      </a>
+      <a href="paket" class="nav-item">
+        <span class="nav-icon">📦</span> Paket Internet
+      </a>
+      <div class="nav-label" style="margin-top:20px">Settings</div>
+      <a href="pengaturan" class="nav-item">
+        <span class="nav-icon">⚙️</span> Pengaturan
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">🚪</span> Logout
+      </a>
+    </nav>
 </aside>
 
 <!-- MAIN -->

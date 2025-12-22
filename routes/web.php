@@ -25,23 +25,26 @@ Route::get('/pendaftaran', function () {
    return view('formulirpendaftaran.pendaftaran');
 });
 
-Route::get('/tes', function () {
+Route::get('/admin/dashboardA', function () {
    return view('formulirpendaftaran.admin.dashboard');
 });
-Route::get('/data-pendaftar', function () {
+Route::get('/admin/data-pendaftar', function () {
    return view('formulirpendaftaran.admin.data-pendaftar');
 });
-Route::get('/paket', function () {
+Route::get('/admin/paket', function () {
    return view('formulirpendaftaran.admin.paket');
 });
-Route::get('/pelanggan', function () {
+Route::get('/admin/pelanggan', function () {
    return view('formulirpendaftaran.admin.pelanggan');
 });
-Route::get('/pengaturan', function () {
+Route::get('/admin/pengaturan', function () {
    return view('formulirpendaftaran.admin.pengaturan');
 });
-Route::get('/wilayah1', function () {
+Route::get('/admin/wilayah', function () {
    return view('formulirpendaftaran.admin.wilayah');
+});
+Route::get('/teknisi', function () {
+   return view('formulirpendaftaran.teknisi.dashboard');
 });
 
 

@@ -30,17 +30,50 @@ body{margin:0;font-family:Inter;background:var(--bg-body);display:flex;min-heigh
   border-right:1px solid var(--border);
   position:fixed;height:100%;top:0;left:0
 }
-.nav{padding:20px 16px}
-.nav-item{
-  display:flex;align-items:center;
-  padding:12px;border-radius:8px;
-  color:var(--text-muted);
-  text-decoration:none;
-  margin-bottom:4px;font-size:14px
-}
-.nav-item.active{background:var(--primary);color:#fff}
-.nav-icon{margin-right:12px;width:20px;text-align:center}
-.nav-label{font-size:11px;text-transform:uppercase;color:#9ca3af;margin:20px 0 8px 12px}
+    .nav {
+      padding: 20px 16px;
+      flex: 1;
+    }
+
+    .nav-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      margin-left: 12px;
+      font-weight: 600;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .nav-item:hover {
+      background: #f0f7ff;
+      color: var(--primary);
+    }
+
+    .nav-item.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(11, 111, 214, 0.2);
+    }
+
+    .nav-icon {
+      margin-right: 12px;
+      width: 20px;
+      text-align: center;
+    }
 
 .main{margin-left:var(--sidebar-width);flex:1;padding:30px;max-width:100%}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
@@ -113,7 +146,7 @@ th{background:#f9fafb;color:#6b7280}
 
 <aside class="sidebar">
     <nav class="nav">
-      <a href="tes" class="nav-item active">
+      <a href="dashboardA" class="nav-item active">
         <span class="nav-icon">📊</span> Dashboard
       </a>
       <a href="data-pendaftar" class="nav-item">
@@ -122,13 +155,12 @@ th{background:#f9fafb;color:#6b7280}
       <a href="pelanggan" class="nav-item">
         <span class="nav-icon">👥</span> Data Pelanggan
       </a>
-      <a href="wilayah1" class="nav-item">
+      <a href="wilayah" class="nav-item">
         <span class="nav-icon">🌍</span> Kelola Wilayah
       </a>
       <a href="paket" class="nav-item">
         <span class="nav-icon">📦</span> Paket Internet
       </a>
-
       <div class="nav-label" style="margin-top:20px">Settings</div>
       <a href="pengaturan" class="nav-item">
         <span class="nav-icon">⚙️</span> Pengaturan
@@ -193,10 +225,22 @@ th{background:#f9fafb;color:#6b7280}
     <div class="stat-desc text-down">▼ Turun (Kinerja Bagus)</div>
   </div>
 </div>
-
 <div class="grid-charts">
   <div class="card">
-    <h3>Statistik Pendaftaran (Mingguan)</h3>
+
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3>Statistik Pendaftaran</h3>
+      <select id="filterPeriode" style="padding:6px 10px;border-radius:6px;border:1px solid #e5e7eb">
+        <option value="minggu-ini">Minggu Ini</option>
+        <option value="minggu-1">Minggu Lalu</option>
+        <option value="minggu-2">2 Minggu Lalu</option>
+        <option value="minggu-3">3 Minggu Lalu</option>
+        <option value="bulan-ini">Bulan Ini</option>
+        <option value="bulan-lalu">Bulan Lalu</option>
+        <option value="tahun-ini">Tahun Ini</option>
+      </select>
+    </div>
+
     <div class="bar-chart" id="barChart"></div>
   </div>
 
@@ -276,22 +320,81 @@ persenAktif.className=`stat-desc ${pAktif>=0?'text-up':'text-down'}`;
 
 menungguInstalasi.innerText=data.filter(t=>t.status==='Menunggu Instalasi').length;
 
-/* BAR */
-const hari=['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
-const count=[0,0,0,0,0,0,0];
-data.forEach(t=>count[new Date(t.created_at).getDay()]++);
-const max=Math.max(...count,1);
-barChart.innerHTML='';
-hari.forEach((h,i)=>{
-  barChart.innerHTML+=`
-  <div class="bar-group">
-    <div style="height:180px;width:36px;background:#f1f5f9;border-radius:6px;margin:auto;display:flex;align-items:flex-end">
-      <div style="width:100%;height:${(count[i]/max)*100}%;background:#0b6fd6;border-radius:6px"></div>
-    </div>
-    <div style="margin-top:6px">${h}</div>
-    <strong>${count[i]}</strong>
-  </div>`;
+/* ================= BAR + DROPDOWN FILTER ================= */
+
+const hari = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+
+const startOfWeek = d => {
+  const x = new Date(d);
+  x.setDate(x.getDate() - x.getDay());
+  x.setHours(0,0,0,0);
+  return x;
+};
+
+const startOfMonth = d =>
+  new Date(d.getFullYear(), d.getMonth(), 1);
+
+const renderBar = list => {
+  const count = [0,0,0,0,0,0,0];
+  list.forEach(t => {
+    count[new Date(t.created_at).getDay()]++;
+  });
+
+  const max = Math.max(...count, 1);
+  barChart.innerHTML = '';
+
+  hari.forEach((h,i)=>{
+    barChart.innerHTML += `
+      <div class="bar-group">
+        <div style="height:180px;width:36px;background:#f1f5f9;border-radius:6px;margin:auto;display:flex;align-items:flex-end">
+          <div style="width:100%;height:${(count[i]/max)*100}%;background:#0b6fd6;border-radius:6px"></div>
+        </div>
+        <div style="margin-top:6px">${h}</div>
+        <strong>${count[i]}</strong>
+      </div>`;
+  });
+};
+
+const filterData = mode => {
+  let start, end;
+  const today = new Date();
+
+  if(mode.startsWith('minggu')){
+    const m = parseInt(mode.split('-')[1] || 0);
+    start = startOfWeek(today);
+    start.setDate(start.getDate() - 7*m);
+    end = new Date(start);
+    end.setDate(end.getDate() + 7);
+  }
+  else if(mode === 'bulan-ini'){
+    start = startOfMonth(today);
+    end = new Date(today.getFullYear(), today.getMonth()+1, 1);
+  }
+  else if(mode === 'bulan-lalu'){
+    start = new Date(today.getFullYear(), today.getMonth()-1, 1);
+    end = new Date(today.getFullYear(), today.getMonth(), 1);
+  }
+  else if(mode === 'tahun-ini'){
+    start = new Date(today.getFullYear(), 0, 1);
+    end   = new Date(today.getFullYear() + 1, 0, 1);
+  }
+
+  const filtered = data.filter(t=>{
+    const d = new Date(t.created_at);
+    return d >= start && d < end;
+  });
+
+  renderBar(filtered);
+};
+
+/* INIT */
+filterData('minggu-ini');
+
+/* EVENT */
+filterPeriode.addEventListener('change', e => {
+  filterData(e.target.value);
 });
+
 
 /* DONUT */
 const paketData=data.filter(t=>t.paket);

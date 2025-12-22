@@ -90,7 +90,7 @@
 <!-- SIDEBAR -->
   <aside class="sidebar">
     <nav class="nav">
-      <a href="tes" class="nav-item">
+      <a href="dashboardA" class="nav-item">
         <span class="nav-icon">📊</span> Dashboard
       </a>
       <a href="data-pendaftar" class="nav-item">
@@ -99,7 +99,7 @@
       <a href="pelanggan" class="nav-item">
         <span class="nav-icon">👥</span> Data Pelanggan
       </a>
-      <a href="wilayah1" class="nav-item">
+      <a href="wilayah" class="nav-item">
         <span class="nav-icon">🌍</span> Kelola Wilayah
       </a>
       <a href="paket" class="nav-item">
