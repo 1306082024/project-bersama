@@ -4,40 +4,44 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kelola Wilayah - Admin Gintara</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
 :root{
   --primary:#0b6fd6;
-  --primary-dark:#074e9e;
   --bg-body:#f4f7fa;
   --bg-card:#fff;
   --text-main:#1f2937;
   --text-muted:#6b7280;
   --border:#e5e7eb;
+  --success:#10b981;
   --danger:#ef4444;
   --sidebar-width:260px;
   --shadow:0 4px 6px -1px rgba(0,0,0,.05),0 2px 4px -1px rgba(0,0,0,.03)
 }
+
 *{box-sizing:border-box}
+
 body{
-  margin:0;font-family:Inter;background:var(--bg-body);
-  display:flex;min-height:100vh;color:var(--text-main)
+  margin:0;
+  font-family:Inter, sans-serif;
+  background:var(--bg-body);
+  display:flex;
+  min-height:100vh;
+  color:var(--text-main)
 }
 
-/* ================= SIDEBAR ================= */
-.sidebar {
-  width: var(--sidebar-width);
-  background: var(--bg-card);
-  border-right: 1px solid var(--border);
-  position: fixed;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  z-index: 10;
+/* ================= SIDEBAR (Identik dengan Dashboard) ================= */
+.sidebar{
+  width:var(--sidebar-width);
+  background:#fff;
+  border-right:1px solid var(--border);
+  position:fixed;
+  height:100%;
+  top:0;
+  left:0;
+  z-index: 100;
 }
 
 .nav {
@@ -50,7 +54,9 @@ body{
   text-transform: uppercase;
   color: var(--text-muted);
   letter-spacing: 0.5px;
-  margin: 20px 0 10px 12px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-left: 12px;
   font-weight: 600;
 }
 
@@ -64,7 +70,7 @@ body{
   margin-bottom: 4px;
   font-size: 14px;
   font-weight: 500;
-  transition: .2s;
+  transition: 0.2s;
 }
 
 .nav-item:hover {
@@ -75,7 +81,7 @@ body{
 .nav-item.active {
   background: var(--primary);
   color: white;
-  box-shadow: 0 4px 12px rgba(11,111,214,.2);
+  box-shadow: 0 4px 12px rgba(11, 111, 214, 0.2);
 }
 
 .nav-icon {
@@ -84,48 +90,98 @@ body{
   text-align: center;
 }
 
-/* MAIN */
-.main{margin-left:var(--sidebar-width);flex:1;padding:30px}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
-.header h1{margin:0;font-size:24px}
-.avatar{width:40px;height:40px;border-radius:50%;background:#e0e7ff;color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700}
-
-/* CARD */
-.card{background:#fff;border-radius:12px;padding:20px;border:1px solid var(--border);box-shadow:var(--shadow)}
-
-/* FORM */
-label{font-size:13px;color:var(--text-muted)}
-input,textarea{
-  width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);
-  font-size:14px;margin-top:4px
+/* ================= MAIN CONTENT AREA ================= */
+.main{
+  margin-left:var(--sidebar-width); /* Kunci agar tidak goyang */
+  flex:1;
+  padding:30px;
+  max-width:calc(100% - var(--sidebar-width));
 }
-textarea{resize:vertical}
 
-/* BUTTON */
-.btn{padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:13px}
-.btn-primary{background:var(--primary);color:#fff;border:none}
-.btn-primary:hover{background:var(--primary-dark)}
-.btn-danger{background:var(--danger);color:#fff;border:none}
-.btn-danger:hover{background:#dc2626}
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px
+}
+
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#e0e7ff;
+  color:var(--primary);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700
+}
+
+/* ================= COMPONENTS ================= */
+.card{
+  background:#fff;
+  border-radius:12px;
+  padding:20px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow)
+}
+
+h1, h3 { margin: 0; }
+
+/* FORM ELEMENTS */
+label{ font-size:13px; color:var(--text-muted); font-weight: 500; }
+input, textarea {
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  font-size:14px;
+  margin-top:4px;
+  outline: none;
+  transition: 0.2s;
+}
+input:focus, textarea:focus { border-color: var(--primary); }
+textarea { resize:vertical }
+
+/* BUTTONS */
+.btn{ 
+  padding:10px 16px; 
+  border-radius:8px; 
+  border:1px solid var(--border); 
+  background:#fff; 
+  cursor:pointer; 
+  font-size:13px; 
+  font-weight: 500;
+  transition: 0.2s;
+}
+.btn-primary{ background:var(--primary); color:#fff; border:none }
+.btn-primary:hover{ background:#095db3; opacity: 0.9; }
+.btn-danger{ background:var(--danger); color:#fff; border:none }
+.btn-danger:hover{ background:#dc2626 }
 
 /* TABLE */
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{padding:14px;border-bottom:1px solid var(--border);vertical-align:top}
-th{background:#f9fafb;color:var(--text-muted);text-align:left}
+table{ width:100%; border-collapse:collapse }
+th, td{ padding:14px; border-bottom:1px solid var(--border); font-size:14px; text-align: left; }
+th{ background:#f9fafb; color:var(--text-muted); font-weight: 600; }
 
 /* MODAL */
 .modal{
-  position:fixed;inset:0;background:rgba(0,0,0,.4);
-  display:none;align-items:center;justify-content:center;z-index:999
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  backdrop-filter: blur(2px);
 }
 .modal-box{
-  background:#fff;padding:20px;border-radius:12px;width:420px
-}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .sidebar{display:none}
-  .main{margin-left:0}
+  background:#fff;
+  padding:25px;
+  border-radius:12px;
+  width:100%;
+  max-width:420px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
 }
 </style>
 </head>
@@ -135,30 +191,40 @@ th{background:#f9fafb;color:var(--text-muted);text-align:left}
 <aside class="sidebar">
     <nav class="nav">
       <a href="dashboardA" class="nav-item">
-        <span class="nav-icon">📊</span> Dashboard
+        <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span> Dashboard
       </a>
+      
+      <div class="nav-label">Manajemen Pelanggan</div>
       <a href="data-pendaftar" class="nav-item">
-        <span class="nav-icon">📝</span> Data Pendaftar
+        <span class="nav-icon"><i class="fa-solid fa-file-signature"></i></span> Data Pendaftar
       </a>
       <a href="pelanggan" class="nav-item">
-        <span class="nav-icon">👥</span> Data Pelanggan
-      </a>
-      <a href="wilayah" class="nav-item active">
-        <span class="nav-icon">🌍</span> Kelola Wilayah
-      </a>
-      <a href="paket" class="nav-item">
-        <span class="nav-icon">📦</span> Paket Internet
+        <span class="nav-icon"><i class="fa-solid fa-users"></i></span> Data Pelanggan
       </a>
 
+      <div class="nav-label">Infrastruktur & Tim</div>
+      <a href="wilayah" class="nav-item active">
+        <span class="nav-icon"><i class="fa-solid fa-map-location-dot"></i></span> Kelola Wilayah
+      </a>
+      <a href="data-teknisi" class="nav-item">
+        <span class="nav-icon"><i class="fa-solid fa-screwdriver-wrench"></i></span> Data Teknisi
+      </a>
+      <a href="paket" class="nav-item">
+        <span class="nav-icon"><i class="fa-solid fa-box"></i></span> Paket Internet
+      </a>
+      <div class="nav-label">Laporan & Audit</div>
+        <a href="laporan-instalasi" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-clipboard-check"></i></span> Laporan Instalasi
+        </a>
       <div class="nav-label" style="margin-top:20px">Settings</div>
       <a href="pengaturan" class="nav-item">
-        <span class="nav-icon">⚙️</span> Pengaturan
+        <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Pengaturan
       </a>
-      <a href="#" class="nav-item">
-        <span class="nav-icon">🚪</span> Logout
+      <a href="#" class="nav-item" style="color: var(--danger)">
+        <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Logout
       </a>
     </nav>
-  </aside>
+</aside>
 
 <main class="main">
 

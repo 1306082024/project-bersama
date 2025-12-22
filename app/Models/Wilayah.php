@@ -14,13 +14,13 @@ class Wilayah extends Model
         'keterangan'
     ];
 
-    public function paket()
-    {
-        return $this->hasMany(Paket::class);
-    }
-
     public function tamu()
     {
         return $this->hasMany(Tamu::class);
+    }
+
+    public function paketList()
+    {
+        return Paket::whereJsonContains('wilayah_id', $this->id)->get();
     }
 }

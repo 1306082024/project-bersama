@@ -31,6 +31,9 @@ Route::get('/admin/dashboardA', function () {
 Route::get('/admin/data-pendaftar', function () {
    return view('formulirpendaftaran.admin.data-pendaftar');
 });
+Route::get('/admin/data-teknisi', function () {
+   return view('formulirpendaftaran.admin.data-teknisi');
+});
 Route::get('/admin/paket', function () {
    return view('formulirpendaftaran.admin.paket');
 });
@@ -43,8 +46,26 @@ Route::get('/admin/pengaturan', function () {
 Route::get('/admin/wilayah', function () {
    return view('formulirpendaftaran.admin.wilayah');
 });
+Route::get('/admin/laporan-instalasi', function () {
+   return view('formulirpendaftaran.admin.laporan-instalasi');
+});
 Route::get('/teknisi', function () {
    return view('formulirpendaftaran.teknisi.dashboard');
+});
+Route::get('/teknisi/tugas', function () {
+   return view('formulirpendaftaran.teknisi.tugas');
+});
+Route::get('/teknisi/gangguan', function () {
+   return view('formulirpendaftaran.teknisi.gangguan');
+});
+Route::get('/teknisi/riwayat', function () {
+   return view('formulirpendaftaran.teknisi.riwayat');
+});
+Route::get('/teknisi/inventaris', function () {
+   return view('formulirpendaftaran.teknisi.inventaris');
+});
+Route::get('/teknisi/peralatan', function () {
+   return view('formulirpendaftaran.teknisi.peralatan');
 });
 
 

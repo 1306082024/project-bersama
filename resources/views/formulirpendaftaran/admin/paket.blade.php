@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Paket Internet - Admin Gintara</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     :root {
       --primary: #0b6fd6;
@@ -214,29 +215,40 @@
   <aside class="sidebar">
     <nav class="nav">
       <a href="dashboardA" class="nav-item">
-        <span class="nav-icon">📊</span> Dashboard
+        <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span> Dashboard
       </a>
+      
+      <div class="nav-label">Manajemen Pelanggan</div>
       <a href="data-pendaftar" class="nav-item">
-        <span class="nav-icon">📝</span> Data Pendaftar
+        <span class="nav-icon"><i class="fa-solid fa-file-signature"></i></span> Data Pendaftar
       </a>
       <a href="pelanggan" class="nav-item">
-        <span class="nav-icon">👥</span> Data Pelanggan
+        <span class="nav-icon"><i class="fa-solid fa-users"></i></span> Data Pelanggan
       </a>
+
+      <div class="nav-label">Infrastruktur & Tim</div>
       <a href="wilayah" class="nav-item">
-        <span class="nav-icon">🌍</span> Kelola Wilayah
+        <span class="nav-icon"><i class="fa-solid fa-map-location-dot"></i></span> Kelola Wilayah
+      </a>
+      <a href="data-teknisi" class="nav-item">
+        <span class="nav-icon"><i class="fa-solid fa-screwdriver-wrench"></i></span> Data Teknisi
       </a>
       <a href="paket" class="nav-item active">
-        <span class="nav-icon">📦</span> Paket Internet
+        <span class="nav-icon"><i class="fa-solid fa-box"></i></span> Paket Internet
       </a>
+      <div class="nav-label">Laporan & Audit</div>
+        <a href="laporan-instalasi" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-clipboard-check"></i></span> Laporan Instalasi
+        </a>
       <div class="nav-label" style="margin-top:20px">Settings</div>
       <a href="pengaturan" class="nav-item">
-        <span class="nav-icon">⚙️</span> Pengaturan
+        <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Pengaturan
       </a>
-      <a href="#" class="nav-item">
-        <span class="nav-icon">🚪</span> Logout
+      <a href="#" class="nav-item" style="color: var(--danger)">
+        <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Logout
       </a>
     </nav>
-  </aside>
+</aside>
 
   <main class="main">
     <div class="header">

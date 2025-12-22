@@ -28,18 +28,22 @@ class Tamu extends Model
         'kabupaten',
 
         'full_alamat',
-
         'pesan',
         'lokasi',
     ];
 
     public function wilayah()
     {
-        return $this->belongsTo(Wilayah::class, 'wilayah_id');
+        return $this->belongsTo(Wilayah::class);
     }
 
     public function paket()
     {
-        return $this->belongsTo(Paket::class, 'paket_id');
+        return $this->belongsTo(Paket::class);
+    }
+
+    public function tugasInstalasi()
+    {
+        return $this->hasOne(TugasInstalasi::class);
     }
 }

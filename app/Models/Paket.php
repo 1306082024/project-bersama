@@ -20,13 +20,14 @@ class Paket extends Model
         'wilayah_id' => 'array'
     ];
 
-    public function wilayah()
-    {
-        return $this->belongsTo(Wilayah::class, 'wilayah_id');
-    }
-
+    // Paket dipakai banyak tamu
     public function tamu()
     {
         return $this->hasMany(Tamu::class);
+    }
+    
+    public function wilayahList()
+    {
+        return Wilayah::whereIn('id', $this->wilayah_id ?? [])->get();
     }
 }

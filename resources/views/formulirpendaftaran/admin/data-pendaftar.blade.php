@@ -174,26 +174,37 @@ th{
 <aside class="sidebar">
     <nav class="nav">
       <a href="dashboardA" class="nav-item">
-        <span class="nav-icon">📊</span> Dashboard
+        <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span> Dashboard
       </a>
+      
+      <div class="nav-label">Manajemen Pelanggan</div>
       <a href="data-pendaftar" class="nav-item active">
-        <span class="nav-icon">📝</span> Data Pendaftar
+        <span class="nav-icon"><i class="fa-solid fa-file-signature"></i></span> Data Pendaftar
       </a>
       <a href="pelanggan" class="nav-item">
-        <span class="nav-icon">👥</span> Data Pelanggan
+        <span class="nav-icon"><i class="fa-solid fa-users"></i></span> Data Pelanggan
       </a>
+
+      <div class="nav-label">Infrastruktur & Tim</div>
       <a href="wilayah" class="nav-item">
-        <span class="nav-icon">🌍</span> Kelola Wilayah
+        <span class="nav-icon"><i class="fa-solid fa-map-location-dot"></i></span> Kelola Wilayah
+      </a>
+      <a href="data-teknisi" class="nav-item">
+        <span class="nav-icon"><i class="fa-solid fa-screwdriver-wrench"></i></span> Data Teknisi
       </a>
       <a href="paket" class="nav-item">
-        <span class="nav-icon">📦</span> Paket Internet
+        <span class="nav-icon"><i class="fa-solid fa-box"></i></span> Paket Internet
       </a>
+      <div class="nav-label">Laporan & Audit</div>
+        <a href="laporan-instalasi" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-clipboard-check"></i></span> Laporan Instalasi
+        </a>
       <div class="nav-label" style="margin-top:20px">Settings</div>
       <a href="pengaturan" class="nav-item">
-        <span class="nav-icon">⚙️</span> Pengaturan
+        <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Pengaturan
       </a>
-      <a href="#" class="nav-item">
-        <span class="nav-icon">🚪</span> Logout
+      <a href="#" class="nav-item" style="color: var(--danger)">
+        <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Logout
       </a>
     </nav>
 </aside>
@@ -262,11 +273,51 @@ let selectedDetail = null;
 =========================== */
 const statusFlow = {
   'Baru': 'Proses',
-  'Proses': 'Disurvey',
+  'Proses': 'Disurvey', // Admin memilih teknisi untuk survey
   'Disurvey': 'Survey OK',
-  'Survey OK': 'Menunggu Instalasi',
+  'Survey OK': 'Menunggu Instalasi', // Admin menjadwalkan pemasangan kabel
   'Menunggu Instalasi': 'Terpasang'
 };
+
+function aksi(t){
+  const status = t.status || 'Baru';
+  const next = statusFlow[status];
+
+  let btn = '';
+
+  if(next){
+    let label = next;
+    let btnClass = 'btn-primary';
+
+    // Perubahan Label agar lebih manusiawi bagi Admin
+    if(status === 'Baru') label = 'Mulai Verifikasi'; 
+    if(status === 'Proses') label = 'Kirim Tim Survey';
+    if(status === 'Survey OK') label = 'Jadwalkan Pasang';
+    if(status === 'Menunggu Instalasi') {
+        label = 'Konfirmasi Aktif';
+        btnClass = 'btn-success';
+    }
+
+    btn = `
+      <button class="btn ${btnClass}"
+        onclick="updateStatus(${t.id}, '${next}')">
+        ${label}
+      </button>
+    `;
+  }
+
+  // Tambahkan tombol Batal untuk tahap awal
+  const btnBatal = (status === 'Baru' || status === 'Proses') ? 
+    `<button class="btn btn-danger" style="color:white" onclick="updateStatus(${t.id}, 'Batal')">Batal</button>` : '';
+
+  return `
+    <div class="action">
+        ${btn}
+        ${btnBatal}
+        <button class="btn" onclick="openDetail(${t.id})">Detail</button>
+    </div>
+  `;
+}
 
 /* ===========================
    BADGE

@@ -4,289 +4,208 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Data Pelanggan - Admin Gintara</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
-:root {
-  --primary: #0b6fd6;
-  --primary-dark: #074e9e;
-  --secondary: #1190ff;
-  --bg-body: #f4f7fa;
-  --bg-card: #ffffff;
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
-  --border: #e5e7eb;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --sidebar-width: 260px;
-  --shadow: 0 4px 6px -1px rgba(0,0,0,.05),
-            0 2px 4px -1px rgba(0,0,0,.03);
+:root{
+  --primary:#0b6fd6;
+  --bg-body:#f4f7fa;
+  --bg-card:#fff;
+  --text-main:#1f2937;
+  --text-muted:#6b7280;
+  --border:#e5e7eb;
+  --success:#10b981;
+  --danger:#ef4444;
+  --info:#3b82f6;
+  --sidebar-width:260px;
+  --shadow:0 4px 6px -1px rgba(0,0,0,.05),0 2px 4px -1px rgba(0,0,0,.03)
 }
 
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter;
+  background:var(--bg-body);
+  display:flex;
+  min-height:100vh;
+  color:var(--text-main)
 }
 
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg-body);
-  color: var(--text-main);
-  display: flex;
-  min-height: 100vh;
+/* ===== SIDEBAR (SAMA DENGAN DASHBOARD) ===== */
+.sidebar{
+  width:var(--sidebar-width);
+  background:#fff;
+  border-right:1px solid var(--border);
+  position:fixed;
+  height:100%;
+  top:0;left:0
+}
+    .nav {
+      padding: 20px 16px;
+      flex: 1;
+    }
+
+    .nav-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      margin-left: 12px;
+      font-weight: 600;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .nav-item:hover {
+      background: #f0f7ff;
+      color: var(--primary);
+    }
+
+    .nav-item.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(11, 111, 214, 0.2);
+    }
+
+    .nav-icon {
+      margin-right: 12px;
+      width: 20px;
+      text-align: center;
+    }
+/* ===== MAIN ===== */
+.main{
+  margin-left:var(--sidebar-width);
+  flex:1;
+  padding:30px;
+  max-width:100%
+}
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px
+}
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#e0e7ff;
+  color:var(--primary);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700
 }
 
-/* ================= SIDEBAR ================= */
-.sidebar {
-  width: var(--sidebar-width);
-  background: var(--bg-card);
-  border-right: 1px solid var(--border);
-  position: fixed;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  z-index: 10;
+/* ===== CARD & TABLE ===== */
+.card{
+  background:#fff;
+  border-radius:12px;
+  padding:20px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow)
 }
 
-.nav {
-  padding: 20px 16px;
-  flex: 1;
+table{width:100%;border-collapse:collapse}
+th,td{
+  padding:16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  font-size:14px
+}
+th{
+  background:#f9fafb;
+  color:#6b7280
 }
 
-.nav-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  letter-spacing: 0.5px;
-  margin: 20px 0 10px 12px;
-  font-weight: 600;
+/* ===== BADGE ===== */
+.badge{
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+  display:inline-block
 }
+.baru{background:#fef3c7;color:#b45309}
+.proses{background:#e0f2fe;color:#0369a1}
+.disurvey{background:#dcfce7;color:#15803d}
+.install{background:#d1fae5;color:#065f46}
+.terpasang{background:#ede9fe;color:#5b21b6}
+.batal{background:#fee2e2;color:#b91c1c}
 
-.nav-item {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  color: var(--text-muted);
-  text-decoration: none;
-  border-radius: 8px;
-  margin-bottom: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  transition: .2s;
+/* ===== BUTTON ===== */
+.btn{
+  padding:6px 12px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+  font-size:12px
 }
+.btn-primary{background:var(--primary);color:#fff;border:none}
+.btn-info{background:var(--info);color:#fff;border:none}
+.btn-success{background:var(--success);color:#fff;border:none}
 
-.nav-item:hover {
-  background: #f0f7ff;
-  color: var(--primary);
+.action{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap
 }
-
-.nav-item.active {
-  background: var(--primary);
-  color: white;
-  box-shadow: 0 4px 12px rgba(11,111,214,.2);
-}
-
-.nav-icon {
-  margin-right: 12px;
-  width: 20px;
-  text-align: center;
-}
-
-/* ================= MAIN ================= */
-.main {
-  margin-left: var(--sidebar-width);
-  flex: 1;
-  padding: 30px;
-  max-width: 100%;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.header h1 {
-  font-size: 24px;
-  margin: 0;
-  color: #111827;
-}
-
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #e0e7ff;
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-}
-
-/* ================= CARD ================= */
-.card {
-  background: var(--bg-card);
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-/* ================= FORM CONTROL ================= */
-input,
-select {
-  font-family: Inter;
-}
-
-input[type="text"],
-select {
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  font-size: 13px;
-  background: white;
-}
-
-/* ================= BUTTON ================= */
-.btn {
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: white;
-  cursor: pointer;
-  font-size: 12px;
-  transition: .2s;
-}
-
-.btn:hover {
-  background: #f3f4f6;
-}
-
-.btn-primary {
-  background: var(--primary);
-  color: white;
-  border: none;
-}
-
-.btn-primary:hover {
-  background: var(--primary-dark);
-}
-
-/* ================= TABLE ================= */
-.table-container {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-th {
-  text-align: left;
-  padding: 14px 16px;
-  color: var(--text-muted);
-  font-weight: 600;
-  border-bottom: 1px solid var(--border);
-  background: #f9fafb;
-}
-
-td {
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--border);
-  vertical-align: top;
-  color: var(--text-main);
-}
-
-/* ================= BADGE ================= */
-.badge {
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  display: inline-block;
-}
-
-.badge-green {
-  background: #dcfce7;
-  color: #15803d;
-}
-
-.badge-yellow {
-  background: #fef3c7;
-  color: #b45309;
-}
-
-.badge-red {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-/* ================= RESPONSIVE ================= */
-@media (max-width: 900px) {
-  .main {
-    padding: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    display: none;
-  }
-  .main {
-    margin-left: 0;
-    padding: 20px;
-  }
-  .header h1 {
-    font-size: 20px;
-  }
-}
-
-  </style>
+</style>
 </head>
 
 <body>
 
-  <aside class="sidebar">
+<aside class="sidebar">
     <nav class="nav">
       <a href="dashboardA" class="nav-item">
-        <span class="nav-icon">📊</span> Dashboard
+        <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span> Dashboard
       </a>
+      
+      <div class="nav-label">Manajemen Pelanggan</div>
       <a href="data-pendaftar" class="nav-item">
-        <span class="nav-icon">📝</span> Data Pendaftar
+        <span class="nav-icon"><i class="fa-solid fa-file-signature"></i></span> Data Pendaftar
       </a>
       <a href="pelanggan" class="nav-item active">
-        <span class="nav-icon">👥</span> Data Pelanggan
-      </a>
-      <a href="wilayah" class="nav-item">
-        <span class="nav-icon">🌍</span> Kelola Wilayah
-      </a>
-      <a href="paket" class="nav-item">
-        <span class="nav-icon">📦</span> Paket Internet
+        <span class="nav-icon"><i class="fa-solid fa-users"></i></span> Data Pelanggan
       </a>
 
+      <div class="nav-label">Infrastruktur & Tim</div>
+      <a href="wilayah" class="nav-item">
+        <span class="nav-icon"><i class="fa-solid fa-map-location-dot"></i></span> Kelola Wilayah
+      </a>
+      <a href="data-teknisi" class="nav-item">
+        <span class="nav-icon"><i class="fa-solid fa-screwdriver-wrench"></i></span> Data Teknisi
+      </a>
+      <a href="paket" class="nav-item">
+        <span class="nav-icon"><i class="fa-solid fa-box"></i></span> Paket Internet
+      </a>
+      <div class="nav-label">Laporan & Audit</div>
+        <a href="laporan-instalasi" class="nav-item">
+          <span class="nav-icon"><i class="fa-solid fa-clipboard-check"></i></span> Laporan Instalasi
+        </a>
       <div class="nav-label" style="margin-top:20px">Settings</div>
       <a href="pengaturan" class="nav-item">
-        <span class="nav-icon">⚙️</span> Pengaturan
+        <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Pengaturan
       </a>
-      <a href="#" class="nav-item">
-        <span class="nav-icon">🚪</span> Logout
+      <a href="#" class="nav-item" style="color: var(--danger)">
+        <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Logout
       </a>
     </nav>
-  </aside>
+</aside>
 
 <main class="main">
 
