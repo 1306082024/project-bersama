@@ -27,7 +27,7 @@ class PaketSeeder extends Seeder
             [
                 'nama' => 'Paket Hemat',
                 'harga' => 170000,
-                'wilayah' => ['Kelayan Tahap 1'],
+                'wilayah' => ['Klayan Tahap 1'],
                 'deskripsi' =>
                     "Kecepatan Download & Upload hingga ekstra speed 60 Mbps\n".
                     "Kuota Unlimited\n".
@@ -36,7 +36,7 @@ class PaketSeeder extends Seeder
             [
                 'nama' => 'Paket Puas',
                 'harga' => 220000,
-                'wilayah' => ['Kelayan Tahap 2'],
+                'wilayah' => ['Klayan Tahap 2'],
                 'deskripsi' =>
                     "Kecepatan Download & Upload hingga ekstra speed 120 Mbps\n".
                     "Kuota Unlimited\n".
@@ -45,7 +45,7 @@ class PaketSeeder extends Seeder
             [
                 'nama' => 'Paket Mantap',
                 'harga' => 310000,
-                'wilayah' => ['Kelayan Tahap 3'],
+                'wilayah' => ['Klayan Tahap 3'],
                 'deskripsi' =>
                     "Kecepatan Download & Upload hingga ekstra speed 180 Mbps\n".
                     "Kuota Unlimited\n".
@@ -54,7 +54,7 @@ class PaketSeeder extends Seeder
             [
                 'nama' => 'Paket Ganas',
                 'harga' => 350000,
-                'wilayah' => ['Kelayan Tahap 4'],
+                'wilayah' => ['Klayan Tahap 4'],
                 'deskripsi' =>
                     "Kecepatan Download & Upload hingga ekstra speed 300 Mbps\n".
                     "Kuota Unlimited\n".
@@ -63,7 +63,7 @@ class PaketSeeder extends Seeder
             [
                 'nama' => 'Paket Sultan',
                 'harga' => 1000000,
-                'wilayah' => ['Kelayan Tahap 5'],
+                'wilayah' => ['Klayan Tahap 5'],
                 'deskripsi' =>
                     "Speed hingga 600 Mbps\n".
                     "Kuota Unlimited\n".

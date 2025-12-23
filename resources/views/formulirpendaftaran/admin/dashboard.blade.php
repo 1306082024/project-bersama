@@ -177,9 +177,14 @@ th{background:#f9fafb;color:#6b7280}
       <a href="pengaturan" class="nav-item">
         <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Pengaturan
       </a>
-      <a href="#" class="nav-item" style="color: var(--danger)">
-        <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Logout
-      </a>
+      <a href="#" class="nav-item" style="color: var(--danger)" 
+   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Logout
+</a>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
     </nav>
 </aside>
 

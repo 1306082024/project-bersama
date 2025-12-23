@@ -63,10 +63,8 @@ class PendaftaranSeeder extends Seeder
 
                 'wilayah_id' => $wilayah[array_rand($wilayah)],
 
-                // 🔥 WAJIB ADA PAKET
                 'paket_id' => $paket[array_rand($paket)],
 
-                // FORMAT ALAMAT SESUAI HTML
                 'alamat_jalan' => 'Trusmiland Klayan – Tahap '.rand(1,5),
                 'no_rumah'     => 'Blok '.chr(rand(65,71)).' No.'.rand(1,30),
                 'rt'           => '0'.rand(1,5),

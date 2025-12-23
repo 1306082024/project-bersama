@@ -195,21 +195,14 @@ body{
       <span class="nav-icon"><i class="fa-solid fa-clock-rotate-left"></i></span> Riwayat Kerja
     </a>
 
-    <div class="nav-label">Logistik & Alat</div>
-    <a href="/teknisi/inventaris" class="nav-item">
-      <span class="nav-icon"><i class="fa-solid fa-box-archive"></i></span> Stok Material (Kabel/ONT)
-    </a>
-    <a href="/teknisi/peralatan" class="nav-item">
-      <span class="nav-icon"><i class="fa-solid fa-toolbox"></i></span> Alat Kerja (Splicer/OPM)
-    </a>
-
     <div class="nav-label">Akun</div>
     <a href="/teknisi/profil" class="nav-item">
       <span class="nav-icon"><i class="fa-solid fa-user-gear"></i></span> Profil & Keamanan
     </a>
-    <a href="/logout" class="nav-item" style="color: var(--danger)">
-      <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Logout
-    </a>
+    <a href="/logout" class="nav-item" style="color: var(--danger)" 
+    onclick="return confirm('Apakah Anda yakin ingin keluar?')">
+    <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Logout
+  </a>
   </nav>
 </aside>
 
@@ -217,7 +210,7 @@ body{
 
 <div class="header">
   <div>
-    <h1 style="margin:0">Halo, Teknisi! 👋</h1>
+    <h1 style="margin:0">Halo, Teknisi!</h1>
     <p style="margin:4px 0 0;color:var(--text-muted);font-size:14px">
       Cek jadwal instalasi dan gangguan hari ini.
     </p>
@@ -309,9 +302,6 @@ async function loadTugas() {
                        target="_blank" class="btn btn-outline">
                         <i class="fa-solid fa-map-location-dot"></i> Maps
                     </a>
-                    <button onclick="markAsDone(${t.id})" class="btn btn-primary">
-                        <i class="fa-solid fa-check-double"></i> Selesai Instalasi
-                    </button>
                 </div>
             </div>`;
         });

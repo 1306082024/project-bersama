@@ -67,14 +67,6 @@
       <span class="nav-icon"><i class="fa-solid fa-clock-rotate-left"></i></span> Riwayat Kerja
     </a>
 
-    <div class="nav-label">Logistik & Alat</div>
-    <a href="/teknisi/inventaris" class="nav-item">
-      <span class="nav-icon"><i class="fa-solid fa-box-archive"></i></span> Stok Material (Kabel/ONT)
-    </a>
-    <a href="/teknisi/peralatan" class="nav-item">
-      <span class="nav-icon"><i class="fa-solid fa-toolbox"></i></span> Alat Kerja (Splicer/OPM)
-    </a>
-
     <div class="nav-label">Akun</div>
     <a href="/teknisi/profil" class="nav-item">
       <span class="nav-icon"><i class="fa-solid fa-user-gear"></i></span> Profil & Keamanan
@@ -123,8 +115,7 @@
         fetch(API_URL)
             .then(res => res.json())
             .then(data => {
-                // Filter hanya yang menunggu atau terpasang
-                const filtered = data.filter(t => t.status === 'Menunggu Instalasi' || t.status === 'Terpasang');
+                const filtered = data.filter(t => t.status === 'Menunggu Instalasi');
                 render(filtered);
             })
             .catch(err => {

@@ -50,14 +50,6 @@
       <span class="nav-icon"><i class="fa-solid fa-clock-rotate-left"></i></span> Riwayat Kerja
     </a>
 
-    <div class="nav-label">Logistik & Alat</div>
-    <a href="/teknisi/inventaris" class="nav-item">
-      <span class="nav-icon"><i class="fa-solid fa-box-archive"></i></span> Stok Material (Kabel/ONT)
-    </a>
-    <a href="/teknisi/peralatan" class="nav-item">
-      <span class="nav-icon"><i class="fa-solid fa-toolbox"></i></span> Alat Kerja (Splicer/OPM)
-    </a>
-
     <div class="nav-label">Akun</div>
     <a href="/teknisi/profil" class="nav-item">
       <span class="nav-icon"><i class="fa-solid fa-user-gear"></i></span> Profil & Keamanan
@@ -74,54 +66,77 @@
         <p style="color:var(--text-muted)">Daftar seluruh pekerjaan yang telah diselesaikan.</p>
     </div>
 
-    <div class="card-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>Pelanggan</th>
-                    <th>Alamat</th>
-                    <th>Paket</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="riwayatTable">
-                <tr><td colspan="4" style="text-align:center; padding:20px;">Memuat riwayat...</td></tr>
-            </tbody>
-        </table>
-    </div>
-</main>
+<div class="card-table">
+    <table>
+        <thead>
+            <tr>
+                <th>Tanggal</th>
+                <th>Pelanggan</th>
+                <th>Paket</th>
+                <th>Bukti Foto</th> <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="riwayatTable">
+            <tr><td colspan="5" style="text-align:center; padding:20px;">Memuat riwayat...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="modalImg" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center; padding:20px;" onclick="this.style.display='none'">
+    <img id="imgFull" src="" style="max-width:100%; max-height:90%; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+</div>
 
 <script>
     const API_BASE = 'http://localhost:8000/api';
 
     async function loadRiwayat() {
+        const tb = document.getElementById('riwayatTable');
         try {
             const response = await fetch(`${API_BASE}/teknisi/tugas`);
-            const data = await response.json();
+            if (!response.ok) throw new Error('Gagal mengambil data');
             
-            // Filter: Hanya yang statusnya 'Terpasang'
+            const data = await response.json();
             const selesai = data.filter(d => d.status === 'Terpasang');
 
-            const tb = document.getElementById('riwayatTable');
             tb.innerHTML = '';
 
             if (selesai.length === 0) {
-                tb.innerHTML = '<tr><td colspan="4" style="text-align:center">Belum ada riwayat pekerjaan.</td></tr>';
+                tb.innerHTML = '<tr><td colspan="5" style="text-align:center">Belum ada riwayat pekerjaan.</td></tr>';
                 return;
             }
 
             selesai.forEach(r => {
+                // Format tanggal Indonesia
+                const tgl = new Date(r.updated_at).toLocaleDateString('id-ID', {
+                    day: '2-digit', month: 'short', year: 'numeric'
+                });
+
+                // Cek Foto
+                const fotoUrl = r.foto_instalasi ? `/storage/instalasi/${r.foto_instalasi}` : null;
+                const fotoHtml = fotoUrl 
+                    ? `<img src="${fotoUrl}" onclick="openImg('${fotoUrl}')" style="width:40px; height:40px; border-radius:6px; object-fit:cover; cursor:pointer; border:1px solid #ddd;">`
+                    : '<span style="color:#ccc; font-size:11px;">No Photo</span>';
+
                 tb.innerHTML += `
                 <tr>
-                    <td><strong>${r.nama}</strong></td>
-                    <td>${r.full_alamat || r.alamat_jalan}</td>
-                    <td>${r.paket ? r.paket.nama : '-'}</td>
+                    <td><span style="font-size:12px; color:var(--text-muted)">${tgl}</span></td>
+                    <td>
+                        <strong>${r.nama}</strong><br>
+                        <small style="color:var(--text-muted)">${r.full_alamat || r.alamat_jalan}</small>
+                    </td>
+                    <td><small>${r.paket ? r.paket.nama : '-'}</small></td>
+                    <td>${fotoHtml}</td>
                     <td><span class="status-pill">Selesai</span></td>
                 </tr>`;
             });
         } catch (e) {
-            console.error(e);
+            tb.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Terjadi kesalahan: ${e.message}</td></tr>`;
         }
+    }
+
+    function openImg(url) {
+        document.getElementById('imgFull').src = url;
+        document.getElementById('modalImg').style.display = 'flex';
     }
 
     loadRiwayat();

@@ -52,14 +52,6 @@
       <span class="nav-icon"><i class="fa-solid fa-clock-rotate-left"></i></span> Riwayat Kerja
     </a>
 
-    <div class="nav-label">Logistik & Alat</div>
-    <a href="/teknisi/inventaris" class="nav-item">
-      <span class="nav-icon"><i class="fa-solid fa-box-archive"></i></span> Stok Material (Kabel/ONT)
-    </a>
-    <a href="/teknisi/peralatan" class="nav-item">
-      <span class="nav-icon"><i class="fa-solid fa-toolbox"></i></span> Alat Kerja (Splicer/OPM)
-    </a>
-
     <div class="nav-label">Akun</div>
     <a href="/teknisi/profil" class="nav-item">
       <span class="nav-icon"><i class="fa-solid fa-user-gear"></i></span> Profil & Keamanan
@@ -77,51 +69,85 @@
     </div>
 
     <div id="listGangguan">
-        <div style="text-align:center; padding:40px; color:var(--text-muted)">Memuat data gangguan...</div>
-    </div>
+        </div>
 </main>
 
 <script>
-    const API_BASE = 'http://localhost:8000/api';
+    // DATA DUMMY
+    const dummyData = [
+        {
+            id: 1,
+            nama: "Budi Santoso",
+            status: "Gangguan",
+            full_alamat: "Perumahan Trusmiland Tahap 5. No. N11, kec. Battembat. Kab. Cirebon",
+            kontak: "0812-3456-7890",
+            lokasi: "-6.3273, 108.3241"
+        },
+        {
+            id: 2,
+            nama: "Siti Aminah",
+            status: "Perbaikan",
+            full_alamat: "Perumahan Trusmiland Tahap 1. No. A2, kec. Gunung Jati. Kab. Cirebon",
+            kontak: "0877-8899-1122",
+            lokasi: "-6.3475, 108.3012"
+        },
+        {
+            id: 3,
+            nama: "Jibranskuy",
+            status: "Gangguan",
+            full_alamat: "Perumahan Trusmiland Tahap 4. No. F4, kec. Battembat. Kab. Cirebon",
+            kontak: "0821-4433-5566",
+            lokasi: "-6.3123, 108.3300"
+        }
+    ];
 
-    async function loadGangguan() {
-        try {
-            const response = await fetch(`${API_BASE}/teknisi/tugas`);
-            const data = await response.json();
-            
-            // Filter: Anggap status 'Gangguan' (Jika Anda sudah punya statusnya)
-            // Sementara kita filter yang belum selesai saja
-            const list = data.filter(d => d.status === 'Gangguan' || d.status === 'Perbaikan');
+    function loadGangguan() {
+        const wrap = document.getElementById('listGangguan');
+        wrap.innerHTML = '';
 
-            const wrap = document.getElementById('listGangguan');
-            wrap.innerHTML = '';
+        // Filter data (sama seperti logic API sebelumnya)
+        const list = dummyData.filter(d => d.status === 'Gangguan' || d.status === 'Perbaikan');
 
-            if (list.length === 0) {
-                wrap.innerHTML = '<div class="card" style="text-align:center; color:var(--text-muted)">Saat ini tidak ada laporan gangguan.</div>';
-                return;
+        if (list.length === 0) {
+            wrap.innerHTML = '<div class="card" style="text-align:center; color:var(--text-muted); padding: 20px; background: white; border-radius: 12px; border: 1px solid var(--border);">Saat ini tidak ada laporan gangguan.</div>';
+            return;
+        }
+
+        list.forEach(g => {
+            wrap.innerHTML += `
+            <div class="task-card">
+                <div class="task-info">
+                    <span class="badge badge-danger">High Priority</span>
+                    <h4 style="margin: 10px 0 5px">${g.nama}</h4>
+                    <p style="font-size: 13px; color: var(--text-muted);"><i class="fa-solid fa-location-dot"></i> ${g.full_alamat}</p>
+                    <p style="font-size: 13px; color: var(--text-muted);"><i class="fa-solid fa-phone"></i> ${g.kontak}</p>
+                </div>
+                <div class="task-action" style="display:flex; gap:10px;">
+                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(g.lokasi)}" target="_blank" class="btn btn-outline">
+                        <i class="fa-solid fa-map"></i> Maps
+                    </a>
+                    <button class="btn btn-primary" onclick="updateStatus(${g.id})">
+                        <i class="fa-solid fa-check"></i> Selesaikan
+                    </button>
+                </div>
+            </div>`;
+        });
+    }
+
+    // Simulasi fungsi update status
+    function updateStatus(id) {
+        if(confirm("Apakah gangguan ini sudah selesai diperbaiki?")) {
+            alert("Berhasil! Status gangguan ID #" + id + " telah diselesaikan.");
+            const index = dummyData.findIndex(item => item.id === id);
+            if (index !== -1) {
+                dummyData.splice(index, 1);
+                loadGangguan();
             }
-
-            list.forEach(g => {
-                wrap.innerHTML += `
-                <div class="task-card">
-                    <div class="task-info">
-                        <span class="badge badge-danger">High Priority</span>
-                        <h4 style="margin: 10px 0 5px">${g.nama}</h4>
-                        <p style="font-size: 13px; color: var(--text-muted);"><i class="fa-solid fa-location-dot"></i> ${g.full_alamat || g.alamat_jalan}</p>
-                        <p style="font-size: 13px; color: var(--text-muted);"><i class="fa-solid fa-phone"></i> ${g.kontak}</p>
-                    </div>
-                    <div class="task-action" style="display:flex; gap:10px;">
-                        <a href="https://www.google.com/maps?q=${encodeURIComponent(g.lokasi || g.full_alamat)}" target="_blank" class="btn btn-outline">Maps</a>
-                        <button class="btn btn-primary" onclick="updateStatus(${g.id})">Selesaikan</button>
-                    </div>
-                </div>`;
-            });
-        } catch (e) {
-            document.getElementById('listGangguan').innerHTML = 'Gagal memuat data.';
         }
     }
 
-    loadGangguan();
+    // Panggil fungsi saat halaman dimuat
+    window.onload = loadGangguan;
 </script>
 </body>
 </html>
