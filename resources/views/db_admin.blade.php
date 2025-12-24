@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUPER ADMIN</title>
+    <title>Metland</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -20,7 +20,7 @@
             <!-- LOGO -->
             <div>
                 <h2 class="text-3xl font-extrabold text-indigo-400 mb-10 tracking-wide">
-                    SUPER ADMIN
+                    Metland Hotel
                 </h2>
 
                 <!-- MENU -->
@@ -38,6 +38,7 @@
                         <span class="text-lg">Dashboard</span>
                     </a>
 
+                    <!-- DATA PENGGUNA
                     <a href="{{ route('super.admin.users.index') }}"
                         class="group flex items-center gap-3 p-3 rounded-xl
                           hover:bg-indigo-600/20 hover:text-indigo-300
@@ -47,36 +48,10 @@
                             class="w-6 h-6 transition-transform duration-300 
                                 group-hover:scale-125 group-hover:-rotate-6">
                         <span class="text-lg">Data Pengguna</span>
-                    </a>
+                    </a> -->
 
-                    <a href="{{ route('super.admin.hotels.index') }}"
-                        class="group flex items-center gap-3 p-3 rounded-xl
-   {{ request()->routeIs('super.admin.hotels.*') 
-      ? 'bg-indigo-600/20 text-indigo-300 shadow-lg shadow-indigo-500/20'
-      : 'hover:bg-indigo-600/20 hover:text-indigo-300' }}
-   transition-all duration-300">
-
-                        <img src="https://img.icons8.com/fluency/48/door.png"
-                            class="w-6 h-6 group-hover:scale-125 transition">
-
-                        <span>List Hotel</span>
-                    </a>
-
-                    <a href="{{ route('super.admin.channels.index') }}"
-                        class="group flex items-center gap-3 p-3 rounded-xl
-   {{ request()->routeIs('super.admin.channels.*') 
-      ? 'bg-indigo-600/20 text-indigo-300 shadow-lg shadow-indigo-500/20'
-      : 'hover:bg-indigo-600/20 hover:text-indigo-300' }}
-   transition-all duration-300">
-
-                        <img src="https://img.icons8.com/fluency/48/tv.png"
-                            class="w-6 h-6 group-hover:scale-125 transition">
-
-                        <span>List Channel</span>
-                    </a>
-
-                    <!-- KELOLA RUANGAN
-                    <a href="{{ route('super.admin.rooms.index') }}"
+                    <!-- KELOLA RUANGAN -->
+                    <a href="{{ route('admin.rooms.index') }}"
                         class="group flex items-center gap-3 p-3 rounded-xl
                           hover:bg-indigo-600/20 hover:text-indigo-300
                           hover:shadow-lg hover:shadow-indigo-500/20
@@ -85,10 +60,10 @@
                             class="w-6 h-6 transition-transform duration-300 
                                 group-hover:scale-125 group-hover:rotate-6">
                         <span class="text-lg">Kelola Ruangan</span>
-                    </a> -->
+                    </a>
 
-                    <!-- TAMU & PERANGKAT
-                    <a href="{{ route('super.admin.guests.index') }}"
+                    <!-- TAMU & PERANGKAT -->
+                    <a href="{{ route('admin.guests.index') }}"
                         class="group flex items-center gap-3 p-3 rounded-xl
                           hover:bg-indigo-600/20 hover:text-indigo-300
                           hover:shadow-lg hover:shadow-indigo-500/20
@@ -97,10 +72,10 @@
                             class="w-6 h-6 transition-transform duration-300 
                                 group-hover:scale-125 group-hover:-rotate-6">
                         <span class="text-lg">Tamu dan Perangkat</span>
-                    </a> -->
+                    </a>
 
-                    <!-- PESAN MAKANAN
-                    <a href="{{ route('super.admin.food-orders.index') }}"
+                    <!-- PESAN MAKANAN -->
+                    <a href="{{ route('admin.food-orders.index') }}"
                         class="group flex items-center gap-3 p-3 rounded-xl
                           hover:bg-indigo-600/20 hover:text-indigo-300
                           hover:shadow-lg hover:shadow-indigo-500/20
@@ -109,7 +84,7 @@
                             class="w-6 h-6 transition-transform duration-300 
                                 group-hover:scale-125 group-hover:-rotate-12">
                         <span class="text-lg">Pesan Makanan</span>
-                    </a> -->
+                    </a>
 
                 </nav>
             </div>
@@ -138,7 +113,7 @@
 
                 <div>
                     <h1 class="text-4xl font-extrabold text-indigo-400 drop-shadow">
-                        Panel Super Admin
+                        Panel Metland Hotel
                     </h1>
                     <p class="text-gray-400 mt-1">Kontrol penuh sistem IPTV Hotel</p>
                 </div>
@@ -165,7 +140,7 @@
             <!-- CARDS -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
 
-                {{-- TOTAL USERS --}}
+                <!-- {{-- TOTAL USERS --}}
                 <div
                     class="bg-gradient-to-br from-indigo-600 to-indigo-400 shadow-xl p-6 rounded-2xl 
                hover:scale-105 transition-transform duration-300">
@@ -173,7 +148,7 @@
                     <p class="text-5xl font-extrabold text-white mt-3">
                         {{ $totalUsers }}
                     </p>
-                </div>
+                </div> -->
 
                 {{-- ROOMS --}}
                 <div
@@ -195,7 +170,7 @@
                     </p>
                 </div>
 
-                <!-- {{-- FOOD ORDER --}}
+                {{-- FOOD ORDER --}}
                 <div
                     class="bg-gradient-to-br from-teal-600 to-teal-400 shadow-xl p-6 rounded-2xl 
                hover:scale-105 transition-transform duration-300">
@@ -203,7 +178,7 @@
                     <p class="text-5xl font-extrabold text-white mt-3">
                         {{ $totalOrders }}
                     </p>
-                </div> -->
+                </div>
 
             </div>
             <!-- STATISTIK HARI INI -->

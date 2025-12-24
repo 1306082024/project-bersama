@@ -5,7 +5,7 @@
             </div>
 
             <!-- Title -->
-            <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Login Super Admin IPTV</h2>
+            <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Login Super Admin dan Admin IPTV</h2>
 
             <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />

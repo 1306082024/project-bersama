@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Room;
+
 
 class DisplayController extends Controller
 {
@@ -44,5 +46,14 @@ class DisplayController extends Controller
     public function yt()
     {
         return view('yt.yt'); // pastikan file resources/views/beranda.blade.php ada
+    }
+
+    public function show(Room $room)
+    {
+        return view('landing page IPTV', [
+            'room' => $room,
+            'guest' => $room->guest, // relasi
+            'orders' => $room->foodOrders,
+        ]);
     }
 }

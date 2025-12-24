@@ -5,6 +5,15 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DisplayController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\FoodOrderController;
+use App\Http\Controllers\HotelController;
+use App\Http\Controllers\ChannelController;
+use App\Http\Controllers\AroomController;
+use App\Http\Controllers\AguestController;
+use App\Http\Controllers\AfoodController;
+use App\Http\Controllers\Sp_adminController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApiController;
 
 /*
@@ -17,6 +26,7 @@ Route::get('/', function () {
     if (auth()->check()) {
         return match (auth()->user()->role) {
             'super admin' => redirect()->route('super.admin.dashboard'),
+            'admin' => redirect()->route('admin.dashboard'),
             'display' => redirect()->route('display.dashboard'),
             default => abort(403),
         };
@@ -77,6 +87,78 @@ Route::middleware(['auth', 'role:super admin'])
         Route::resource('rooms', RoomController::class);
     });
 
+Route::middleware(['auth', 'role:super admin'])
+    ->prefix('super-admin')
+    ->name('super.admin.')
+    ->group(function () {
+        Route::resource('guests', GuestController::class);
+    });
+
+Route::middleware(['auth', 'role:super admin'])
+    ->prefix('super-admin')
+    ->group(function () {
+
+        Route::resource('food-orders', FoodOrderController::class)
+            ->names('super.admin.food-orders');
+    });
+
+Route::middleware(['auth', 'role:super admin'])
+    ->prefix('super-admin')
+    ->group(function () {
+
+        Route::resource('hotels', HotelController::class)
+            ->names('super.admin.hotels');
+    });
+
+Route::middleware(['auth', 'role:super admin'])
+    ->prefix('super-admin')
+    ->group(function () {
+
+        Route::resource('channels', ChannelController::class)
+            ->names('super.admin.channels');
+    });
+
+Route::middleware(['auth', 'role:super admin'])
+    ->prefix('super-admin')
+    ->name('super.admin.')
+    ->group(function () {
+        Route::get(
+            '/dashboard',
+            [Sp_adminController::class, 'index']
+        )->name('dashboard');
+    });
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN ONLY
+|--------------------------------------------------------------------------
+// */
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+
+        Route::resource('rooms', AroomController::class);
+        Route::resource('guests', AguestController::class);
+        Route::resource('food-orders', AfoodController::class);
+    });
+
+Route::get(
+    '/admin/hotels/{hotel}/rooms',
+    [RoomController::class, 'byHotel']
+)->name('admin.hotels.rooms');
+
+Route::get('/admin/hotels/{hotel}/rooms', function ($hotelId) {
+    return \App\Models\Room::where('hotel_id', $hotelId)
+        ->where('status', 'kosong')
+        ->orderBy('no_kamar')
+        ->get(['id', 'no_kamar', 'tipe_kamar']);
+});
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +171,9 @@ Route::middleware(['auth', 'role:display'])->group(function () {
     Route::get('/display', fn() => view('landing page IPTV'))
         ->name('display.dashboard');
 });
+
+Route::get('/display/{room}', [DisplayController::class, 'show'])
+    ->name('display.show');
 
 /*
 |--------------------------------------------------------------------------
