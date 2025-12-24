@@ -218,35 +218,59 @@ th { background: #f9fafb; color: var(--text-muted); font-weight: 600; }
 </div>
 
 <script>
-    const API = 'http://localhost:8000/api/admin/tamu';
+    // Gunakan endpoint baru yang sudah di-JOIN
+    const API_URL = 'http://localhost:8000/api/admin/laporan-instalasi';
+    const BASE_URL = window.location.origin;
 
-    fetch(API)
+    fetch(API_URL)
     .then(r => r.json())
     .then(data => {
         const table = document.getElementById('tableLaporan');
-        // Hanya tampilkan yang statusnya "Terpasang"
-        const terpasang = data.filter(t => t.status === 'Terpasang');
 
-        table.innerHTML = terpasang.map(t => `
+        if (data.length === 0) {
+            table.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px">Belum ada data instalasi.</td></tr>';
+            return;
+        }
+
+        table.innerHTML = data.map(t => {
+            // Format Tanggal
+            const tgl = new Date(t.created_at).toLocaleDateString('id-ID', {
+                day: '2-digit', month: 'short', year: 'numeric'
+            });
+
+            // Handle Foto (Gunakan foto_bukti dari tabel tugas_instalasi)
+            let imgHtml = '<span style="color:#ccc; font-size:12px">Tidak ada foto</span>';
+            
+            if (t.foto_bukti) {
+                // encodeURI penting untuk menangani spasi pada nama file
+                const imgPath = `${BASE_URL}/storage/instalasi/${encodeURI(t.foto_bukti)}`;
+                imgHtml = `<img src="${imgPath}" 
+                                onclick="showImg('${imgPath}')" 
+                                style="width:45px; height:45px; border-radius:6px; cursor:pointer; object-fit:cover; border:1px solid #ddd;"
+                                onerror="this.src='https://placehold.co/45x45?text=Err'">`;
+            }
+
+            return `
             <tr>
-                <td>${new Date(t.created_at).toLocaleDateString('id-ID')}</td>
+                <td>${tgl}</td>
                 <td>
-                    <strong>${t.nama}</strong><br>
-                    <small style="color:gray">${t.full_alamat || '-'}</small>
+                    <strong>${t.nama_pelanggan}</strong><br>
+                    <small style="color:gray">${t.full_alamat || t.alamat_jalan || '-'}</small>
                 </td>
                 <td>
-                    <span style="color:var(--primary); font-weight:600">
-                        <i class="fa-solid fa-user-gear"></i> ${t.teknisi_nama || 'Teknisi Gintara'}
+                    <span style="color:var(--primary); font-weight:600; font-size:13px">
+                        <i class="fa-solid fa-user-gear"></i> ${t.nama_teknisi || 'Teknisi Gintara'}
                     </span>
                 </td>
-                <td>${t.paket?.nama || '-'}</td>
-                <td>
-                    ${t.foto_instalasi 
-                        ? `<img src="/storage/instalasi/${t.foto_instalasi}" class="img-preview" onclick="showImg('/storage/instalasi/${t.foto_instalasi}')">` 
-                        : '<span style="color:#ccc">Tidak ada foto</span>'}
-                </td>
+                <td><span class="badge" style="background:#e0f2fe; color:#0284c7">${t.nama_paket || '-'}</span></td>
+                <td>${imgHtml}</td>
             </tr>
-        `).join('');
+            `;
+        }).join('');
+    })
+    .catch(err => {
+        console.error(err);
+        document.getElementById('tableLaporan').innerHTML = '<tr><td colspan="5" style="color:red; text-align:center">Gagal memuat data.</td></tr>';
     });
 
     function showImg(url) {

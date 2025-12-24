@@ -108,55 +108,57 @@
 </div>
 
 <script>
+    // 1. Konfigurasi Endpoint
     const API_URL = 'http://localhost:8000/api/admin/tamu';
     const container = document.getElementById('containerTugas');
 
+    // 2. Fungsi Mengambil Data dari Server
     function loadTugas() {
         fetch(API_URL)
             .then(res => res.json())
             .then(data => {
+                // Filter hanya yang statusnya "Menunggu Instalasi"
                 const filtered = data.filter(t => t.status === 'Menunggu Instalasi');
                 render(filtered);
             })
             .catch(err => {
-                container.innerHTML = '<div class="card" style="color:red; text-align:center">Gagal terhubung ke server</div>';
+                console.error(err);
+                container.innerHTML = '<div class="card" style="color:red; text-align:center">Gagal terhubung ke server. Pastikan API menyala.</div>';
             });
     }
 
+    // 3. Fungsi Menampilkan Data ke HTML
     function render(data) {
         container.innerHTML = '';
         if (data.length === 0) {
-            container.innerHTML = '<div class="card" style="text-align:center; color:var(--text-muted)">Tidak ada tugas pendaftaran</div>';
+            container.innerHTML = '<div class="card" style="text-align:center; padding:40px; color:var(--text-muted)">Semua tugas pendaftaran telah selesai dikerjakan.</div>';
             return;
         }
 
         data.forEach(t => {
-            const isDone = t.status === 'Terpasang';
             container.innerHTML += `
                 <div class="task-card">
                     <div>
-                        <span class="badge ${isDone ? 'badge-green' : 'badge-warning'}">${t.status}</span>
+                        <span class="badge badge-warning">${t.status}</span>
                         <h4 style="margin:8px 0 4px">${t.nama}</h4>
                         <p style="font-size:13px; color:var(--text-muted)">
                             <i class="fa-solid fa-location-dot"></i> ${t.full_alamat || t.alamat_jalan || '-'}
                         </p>
                     </div>
                     <div class="task-action" style="display:flex; gap:8px;">
-                        <a href="https://www.google.com/maps?q=${t.lokasi}" target="_blank" class="btn btn-outline">
+                        <a href="https://www.google.com/maps/search/?api=1&query=${t.lokasi || t.nama}" target="_blank" class="btn btn-outline">
                             <i class="fa-solid fa-map"></i> Lokasi
                         </a>
-                        ${!isDone ? `
-                            <button class="btn btn-primary" onclick="bukaModal(${t.id})">
-                                <i class="fa-solid fa-camera"></i> Mulai Pasang
-                            </button>
-                        ` : ''}
+                        <button class="btn btn-primary" onclick="bukaModal(${t.id})">
+                            <i class="fa-solid fa-camera"></i> Selesaikan
+                        </button>
                     </div>
                 </div>
             `;
         });
     }
 
-    /* LOGIC MODAL & UPLOAD */
+    // 4. Kontrol Modal
     function bukaModal(id) {
         document.getElementById('selectedTaskId').value = id;
         document.getElementById('modalFoto').style.display = 'flex';
@@ -167,47 +169,46 @@
         document.getElementById('formUpload').reset();
     }
 
-    document.getElementById('formUpload').onsubmit = async function(e) {
-        e.preventDefault();
+    // 5. Proses Submit Form (Upload & Update Status)
+document.getElementById('formUpload').onsubmit = async function(e) {
+    e.preventDefault();
+    
+    const id = document.getElementById('selectedTaskId').value;
+    const foto = document.getElementById('fotoFile').files[0];
+    
+    if(!foto) return alert("Pilih foto dulu!");
+
+    const formData = new FormData();
+    formData.append('foto_instalasi', foto); 
+    formData.append('status', 'Terpasang');
+
+    const btnSubmit = e.target.querySelector('button[type="submit"]');
+    btnSubmit.innerText = "Mengirim...";
+    btnSubmit.disabled = true;
+
+    try {
+        const res = await fetch(`http://localhost:8000/api/teknisi/selesai/${id}`, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        });
         
-        const id = document.getElementById('selectedTaskId').value;
-        const foto = document.getElementById('fotoFile').files[0];
+        const result = await res.json();
         
-        if(!foto) return alert("Pilih foto dulu!");
-
-        const formData = new FormData();
-        formData.append('status', 'Terpasang');
-        formData.append('foto', foto);
-        formData.append('_method', 'PATCH'); // Spoofing method PATCH untuk Laravel
-
-        const btnSubmit = e.target.querySelector('button[type="submit"]');
-        btnSubmit.innerText = "Mengirim...";
-        btnSubmit.disabled = true;
-
-        try {
-            const res = await fetch(`${API_URL}/${id}/status`, {
-                method: 'POST', // Gunakan POST karena FormData
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
-            const result = await res.json();
-            
-            if(res.ok) {
-                alert("Berhasil! Tugas diselesaikan.");
-                tutupModal();
-                loadTugas();
-            } else {
-                alert("Gagal update: " + (result.message || "Error server"));
-            }
-        } catch (err) {
-            alert("Kesalahan koneksi!");
-        } finally {
-            btnSubmit.innerText = "Konfirmasi Selesai";
-            btnSubmit.disabled = false;
+        if(res.ok) {
+            alert("Berhasil! Data masuk ke Laporan dan Riwayat.");
+            tutupModal();
+            loadTugas(); 
+        } else {
+            alert("Gagal: " + (result.message || "Terjadi kesalahan"));
         }
-    };
-
-    // Jalankan pertama kali
+    } catch (err) {
+        alert("Kesalahan koneksi!");
+    } finally {
+        btnSubmit.innerText = "Konfirmasi Selesai";
+        btnSubmit.disabled = false;
+    }
+};
     loadTugas();
 </script>
 </body>

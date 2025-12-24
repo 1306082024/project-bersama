@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\WilayahController;
-use App\Http\Controllers\Api\PaketController;
 use App\Http\Controllers\Api\TamuController;
-use App\Http\Controllers\Api\PelangganController;
+use App\Http\Controllers\Api\PaketController;
 use App\Http\Controllers\Api\TeknisiController;
+use App\Http\Controllers\Api\WilayahController;
+use App\Http\Controllers\Api\PelangganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,5 +49,23 @@ Route::get('/admin/pelanggan', [PelangganController::class, 'index']);
 /* =========================
  | TEKNISI
  ========================= */
+
 Route::get('/teknisi/tugas', [TeknisiController::class, 'tugas']);
-Route::patch('/teknisi/selesai/{id}', [TeknisiController::class, 'selesai']);
+Route::post('/teknisi/selesai/{id}', [TeknisiController::class, 'selesai']);
+
+Route::get('/admin/laporan-instalasi', function () {
+    return DB::table('tugas_instalasi')
+        ->join('tamu', 'tugas_instalasi.tamu_id', '=', 'tamu.id')
+        ->leftJoin('paket', 'tamu.paket_id', '=', 'paket.id')
+        ->leftJoin('teknisi', 'tugas_instalasi.teknisi_id', '=', 'teknisi.id')
+        ->select(
+            'tugas_instalasi.*', 
+            'tamu.nama as nama_pelanggan',
+            'tamu.full_alamat',
+            'tamu.alamat_jalan',
+            'paket.nama as nama_paket',
+            'teknisi.nama as nama_teknisi'
+        )
+        ->orderBy('tugas_instalasi.created_at', 'desc')
+        ->get();
+});

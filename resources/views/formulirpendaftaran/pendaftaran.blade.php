@@ -6,77 +6,87 @@
   <title>Pendaftaran Gintara</title>
   <meta name="description" content="Landing page Pendaftaran Gintara — paket Internet Rumah (Hemat, Puas, Mantap)." />
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <link rel="icon" type="image/png" href="{{ asset('storage/gambar/favicon-gintara.png') }}">
 
   <style>
-    :root{
-      --bg:#f6fbff;
-      --card:#ffffff;
-      --muted:#6b7280;
-      /* Warna Gintara */
-      --primary:#0b6fd6; 
-      --accent:#1190ff;
-      --accent-2:#06a6ff;
-      
-      --radius:12px;
-      --max-width:1100px;
+    :root {
+      --bg: #f6fbff;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --primary: #0b6fd6; 
+      --accent: #1190ff;
+      --accent-2: #06a6ff;
+      --radius: 12px;
+      --max-width: 1100px;
       --shadow: 0 10px 30px rgba(10,40,80,0.06);
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      background:linear-gradient(180deg,#f8fbff 0%, #ffffff 100%);
-      color:#072244;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      display:flex;
-      justify-content:center;
-      padding:28px;
+    
+    * { box-sizing: border-box; }
+    
+    /* PERBAIKAN CSS: Agar background full sampai bawah */
+    html, body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
     }
 
-    .shell{
-      width:100%;
-      max-width:var(--max-width);
-      display:flex;
-      flex-direction:column;
-      gap:20px;
+    body {
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+      background-attachment: fixed; 
+      color: #072244;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      display: flex;
+      justify-content: center;
+      padding: 28px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: var(--max-width);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     /* --- HERO SECTION --- */
-    .hero{
+    .hero {
       width: 100%;
       min-height: 200px;
-      display:flex;
-      gap:20px;
-      align-items:center;
+      display: flex;
+      gap: 20px;
+      align-items: center;
       justify-content: space-between;
-      background:linear-gradient(90deg,#fff,#fbfdff);
-      padding:24px;
-      border-radius:16px;
-      box-shadow:var(--shadow);
-      border:1px solid rgba(7,19,37,0.04);
+      background: linear-gradient(90deg, #fff, #fbfdff);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(7,19,37,0.04);
     }
-    .brand{ display:flex;gap:14px;align-items:center }
-    .logo{
-      width:80px;height:80px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-      color:#fff;font-weight:800;font-size:28px;box-shadow:0 10px 30px rgba(11,111,214,0.12);
-      flex-shrink:0;overflow:hidden;
+    .brand { display: flex; gap: 14px; align-items: center; }
+    .logo {
+      width: 80px; height: 80px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-size: 28px; box-shadow: 0 10px 30px rgba(11,111,214,0.12);
+      flex-shrink: 0; overflow: hidden;
     }
-    .logo img{ width:100%;height:100%;object-fit:contain;display:block; }
-    .hero-left, .hero-right{ flex:1 }
-    .kicker{ color:var(--primary);font-weight:700;font-size:13px }
-    .hero-title{ font-size:26px;margin:6px 0 6px;color:#042244;line-height:1.05 }
-    .hero-sub{ color:var(--muted);margin:0;font-size:14px }
-    .hero-cta{ display:flex;gap:12px;margin-top:12px }
-    .btn{ padding:10px 14px;border-radius:10px;font-weight:700;border:0;cursor:pointer }
-    .btn-primary{ background:linear-gradient(90deg,var(--primary),var(--accent-2)); color:#fff; box-shadow:0 10px 24px rgba(11,111,214,0.12) }
-    .btn-ghost{ background:#fff; border:1px solid rgba(7,19,37,0.06); color:var(--primary) }
-    .hero-right, .hero-card{ width: 100%; max-width: 260px; margin-left: auto; }
+    .logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .hero-left, .hero-right { flex: 1; }
+    .kicker { color: var(--primary); font-weight: 700; font-size: 13px; }
+    .hero-title { font-size: 26px; margin: 6px 0 6px; color: #042244; line-height: 1.05; }
+    .hero-sub { color: var(--muted); margin: 0; font-size: 14px; }
+    .hero-cta { display: flex; gap: 12px; margin-top: 12px; }
+    .btn { padding: 10px 14px; border-radius: 10px; font-weight: 700; border: 0; cursor: pointer; }
+    .btn-primary { background: linear-gradient(90deg, var(--primary), var(--accent-2)); color: #fff; box-shadow: 0 10px 24px rgba(11,111,214,0.12); }
+    .btn-ghost { background: #fff; border: 1px solid rgba(7,19,37,0.06); color: var(--primary); }
+    .hero-right, .hero-card { width: 100%; max-width: 260px; margin-left: auto; }
 
-    /* --- MAIN CARD & LAYOUT --- */
-    .card{ background:var(--card); padding:16px; border-radius:12px; box-shadow:var(--shadow); border:1px solid rgba(7,19,37,0.04) }
+    .card { background: var(--card); padding: 16px; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid rgba(7,19,37,0.04); }
 
     .slides-wrap {
       display: grid;
@@ -85,148 +95,83 @@
       align-items: stretch; 
     }
 
-    /* =======================
-       BAGIAN KIRI (SIDEBAR) - 
-       =======================
-    */
+    /* SIDEBAR */
     .steps {
-      /* Background Gradien Biru (Gintara) Penuh */
       background: linear-gradient(180deg, var(--accent-2) 0%, var(--primary) 100%);
-      border-radius:12px;
+      border-radius: 12px;
       padding: 32px 20px;
-      box-shadow:var(--shadow);
-      min-height: 480px; 
+      box-shadow: var(--shadow);
+      height: auto; 
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
       text-align: center; 
       color: #fff; 
     }
 
-    .steps h3 { 
-      margin: 0 0 8px; 
-      font-size: 20px; 
-      font-weight: 800;
-      color: #fff; 
-    }
-    
-    .steps-subtitle {
-        font-size: 13px;
-        color: rgba(255,255,255,0.85);
-        margin-bottom: 32px;
-    }
+    .steps h3 { margin: 0 0 8px; font-size: 20px; font-weight: 800; color: #fff; }
+    .steps-subtitle { font-size: 13px; color: rgba(255,255,255,0.85); margin-bottom: 32px; }
 
     .step {
-      display:flex;
-      flex-direction: column; 
-      align-items: center; 
-      padding:10px;
-      margin-bottom: 24px;
-      transition: all .2s;
+      display: flex; flex-direction: column; align-items: center; 
+      padding: 10px; margin-bottom: 24px; transition: all .2s;
     }
 
-    /* Kotak Ikon Putih */
     .step-icon-box {
-        width: 56px; 
-        height: 56px; 
-        background: #fff; 
-        border-radius: 14px;
-        display: flex; 
-        align-items: center; 
-        justify-content: center;
-        margin-bottom: 12px;
-        color: var(--primary); /* Ikon berwarna Biru Gintara */
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        width: 56px; height: 56px; background: #fff; border-radius: 14px; 
+        display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
+        color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     .step-icon-box svg { width: 26px; height: 26px; }
 
-    .step .desc { 
-        font-size: 16px; 
-        color: #fff; 
-        font-weight: 700; 
-        margin-bottom: 4px;
-    }
-    .step .sub { 
-        font-size: 13px; 
-        color: rgba(255,255,255,0.85); 
-        font-weight: 400; 
-        line-height: 1.4;
-        max-width: 220px;
-    }
+    .step .desc { font-size: 16px; color: #fff; font-weight: 700; margin-bottom: 4px; }
+    .step .sub { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 400; line-height: 1.4; max-width: 220px; }
 
-    /* Efek Active */
-    .step.active .step-icon-box {
-       transform: scale(1.1);
-       box-shadow: 0 0 0 4px rgba(255,255,255,0.25);
-    }
+    .step.active .step-icon-box { transform: scale(1.1); box-shadow: 0 0 0 4px rgba(255,255,255,0.25); }
 
-    /* --- SLIDES AREA (KANAN) --- */
-    #slides { 
-      padding: 0;
-      height: 100%; 
-    }
-    .slide { 
-      margin-bottom: 6px; 
-    }
-    .hidden {
-      display:none; 
-    }
-    .slide-3 {
-      height: 100%;
-    }
-
-    .slide-area {
-      max-height: none;
-      overflow: visible;
-      padding-right: 0;
-    }
+    #slides { padding: 0; height: auto; }
+    .slide { margin-bottom: 6px; }
+    .hidden { display: none; }
+    .slide-3 { height: 100%; }
+    .slide-area { max-height: none; overflow: visible; padding-right: 0; }
     
-    #packages{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:10px;
-    }
-    .pkg{
-      background:#ffffff;
-      border-radius:12px;
-      padding:14px 16px;
-      box-shadow:var(--shadow);
-      border:1px solid rgba(7,19,37,0.06);
-      box-sizing:border-box;
-      min-width:220px;
+    /* CSS UNTUK PETA (MAP) */
+    #map {
+        height: 280px; width: 100%; border-radius: 12px; margin-bottom: 15px;
+        z-index: 1; border: 2px solid #e5e7eb;
     }
 
-    /* Responsive */
+    #packages { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+    .pkg {
+      background: #ffffff; border-radius: 12px; padding: 14px 16px; 
+      box-shadow: var(--shadow); border: 1px solid rgba(7,19,37,0.06); 
+      box-sizing: border-box; min-width: 220px; flex: 1;
+    }
+
     @media (max-width: 880px) {
       .slides-wrap { grid-template-columns: 1fr; }
-      .steps { order: -1; margin-bottom:10px; min-height: auto; padding: 24px; }
-      .step { margin-bottom: 16px; }
+      .steps { order: -1; margin-bottom: 10px; min-height: auto; padding: 24px; flex-direction: row; overflow-x: auto; gap: 16px;}
+      .step { margin-bottom: 0; min-width: 100px; }
     }
 
     /* Form Elements */
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-    input[type="text"], input[type="email"], input[type="number"], textarea, select{
-      width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(7,19,37,0.06);
-      background:#fff;font-size:14px;color:inherit;outline:none;
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+    input[type="text"], input[type="email"], input[type="number"], textarea, select {
+      width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(7,19,37,0.06);
+      background: #fff; font-size: 14px; color: inherit; outline: none;
     }
-    textarea{min-height:120px;resize:vertical;padding:10px 12px}
-    .form-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-    .small{font-size:13px;color:var(--muted)}
+    textarea { min-height: 120px; resize: vertical; padding: 10px 12px; }
+    .form-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+    .small { font-size: 13px; color: var(--muted); }
 
-    .agree-wrap { display:flex; align-items:flex-start; gap:8px; margin-top:12px; }
-    .agree-wrap input[type="checkbox"] { width:18px; height:18px; margin-top:4px; }
+    .agree-wrap { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; }
+    .agree-wrap input[type="checkbox"] { width: 18px; height: 18px; margin-top: 4px; }
 
-    /* Footer Margin Fix */
-    .premium-footer {
-      margin-bottom: 120px;   
-      padding-bottom: 40px;
-      display: block;
-      overflow: visible !important;
-    }
+    .premium-footer { margin-bottom: 120px; padding-bottom: 40px; display: block; overflow: visible !important; }
 
-    /* Animations */
     @keyframes fadeUp { 0% { opacity: 0; transform: translateY(18px);} 100% { opacity: 1; transform: translateY(0);} }
     .slide { animation: fadeUp .45s ease-out; }
   </style>
-<link rel="icon" type="image/png" href="{{ asset('storage/gambar/favicon-gintara.png') }}">
 </head>
 <body>
 <main class="shell" id="app">
@@ -337,6 +282,15 @@
       <input type="hidden" id="selected_wilayah" name="wilayah_id" />
       <input type="hidden" id="selected_paket" name="paket_id" />
 
+      <div style="background:#eff6ff; padding:15px; border-radius:12px; margin-bottom:20px; border:1px solid #dbeafe;">
+        <label style="color:var(--primary); font-size:14px; margin-bottom:10px;">📍 Lokasi Pemasangan (Wajib)</label>
+        <div id="map"></div>
+        <button type="button" class="btn btn-ghost" onclick="getLocation()" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7-7 7z"/></svg>
+            Ambil Lokasi Saya Saat Ini
+        </button>
+        <div id="locStatus" class="small hint" style="margin-top:8px; text-align:center; color:var(--primary); font-weight:600;"></div>
+      </div>
       <label>Nama *</label>
       <input id="nama" name="nama" type="text" required>
 
@@ -402,15 +356,14 @@
       </div>
 
       <div class="form-actions">
-        <button type="button" class="btn btn-ghost" onclick="setLocation()">
-          Set Lokasi
+        <button type="button" class="btn btn-ghost" onclick="getLocation()">
+          Set Lokasi (GPS)
         </button>
         <button type="submit" class="btn btn-primary">
           Kirim Formulir
         </button>
       </div>
-
-      <div id="locStatus" class="small hint" style="margin-top:8px"></div>
+      
     </form>
   </div>
 </div>
@@ -430,7 +383,6 @@
   position:relative;
 ">
 
-  <!-- Background Grid -->
   <div style="
     position:absolute;
     inset:0;
@@ -456,7 +408,6 @@
     gap:34px;
   ">
 
-    <!-- Fitur 1 -->
     <div style="display:flex;gap:16px;align-items:flex-start">
       <div style="
         width:54px;height:54px;border-radius:14px;
@@ -473,7 +424,6 @@
       </div>
     </div>
 
-    <!-- Fitur 2 -->
     <div style="display:flex;gap:16px;align-items:flex-start">
       <div style="
         width:54px;height:54px;border-radius:14px;background:white;
@@ -495,7 +445,6 @@
       </div>
     </div>
     
-    <!-- Fitur 3 -->
     <div style="display:flex;gap:16px;align-items:flex-start">
       <div style="
         width:54px;height:54px;border-radius:14px;background:white;
@@ -512,7 +461,6 @@
       </div>
     </div>
 
-    <!-- Fitur 4 -->
     <div style="display:flex;gap:16px;align-items:flex-start">
       <div style="
         width:54px;height:54px;border-radius:14px;background:white;
@@ -532,7 +480,6 @@
       </div>
     </div>
 
-    <!-- Fitur 5 -->
     <div style="display:flex;gap:16px;align-items:flex-start">
       <div style="
         width:54px;height:54px;border-radius:14px;background:white;
@@ -550,7 +497,6 @@
       </div>
     </div>
 
-    <!-- Fitur 6 -->
     <div style="display:flex;gap:16px;align-items:flex-start">
       <div style="
         width:54px;height:54px;border-radius:14px;background:white;
@@ -573,10 +519,17 @@
 
 </main>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
 <script>
   const apiBase = '/api';
   let selectedWilayah = null;
   let selectedPaket = null;
+  
+  // VARIABEL MAPS
+  let map, marker;
+  let currentLat = -6.200000; 
+  let currentLng = 106.816666;
 
   function setActiveStep(n){
     document.querySelectorAll('.steps .step').forEach(el=>{
@@ -592,13 +545,73 @@
         target.classList.remove('hidden');
 
         if(n === 3){
-          setLocationAuto();
+          setTimeout(initMap, 200); // Panggil fungsi initMap saat masuk slide 3
         }
       }
 
       setActiveStep(n);
       if(n === 2) loadPaket();
     }
+
+  // --- FUNGSI MAPS ---
+  function initMap() {
+    if(map) {
+        map.invalidateSize();
+        return; 
+    }
+    // 1. Buat Peta
+    map = L.map('map').setView([currentLat, currentLng], 13);
+    // 2. Tile Layer OSM
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+    // 3. Marker Draggable
+    marker = L.marker([currentLat, currentLng], {draggable: true}).addTo(map);
+
+    // Update input saat drag
+    marker.on('dragend', function(e) {
+        const position = marker.getLatLng();
+        updateCoordInput(position.lat, position.lng);
+    });
+    // Update input saat klik peta
+    map.on('click', function(e) {
+        marker.setLatLng(e.latlng);
+        updateCoordInput(e.latlng.lat, e.latlng.lng);
+    });
+  }
+
+  function updateCoordInput(lat, lng) {
+    const form = document.getElementById('guestForm');
+    form.dataset.lokasi = lat + "," + lng;
+    document.getElementById('locStatus').innerText = `Lokasi Terpilih: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+  }
+
+  // UPDATE FUNGSI GEOLOCATION
+  function getLocation() {
+    const status = document.getElementById('locStatus');
+    status.innerText = "Mencari lokasi GPS...";
+
+    if (!navigator.geolocation) {
+        status.innerText = "Browser tidak mendukung lokasi.";
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            
+            // Pindahkan Marker Peta
+            if(map && marker) {
+                map.setView([lat, lng], 17);
+                marker.setLatLng([lat, lng]);
+            }
+            updateCoordInput(lat, lng);
+            status.innerText = "Lokasi ditemukan! (Geser pin jika kurang pas)";
+        },
+        () => { status.innerText = "Gagal mengambil lokasi. Pastikan GPS aktif."; }
+    );
+  }
 
   async function loadWilayah(){
     const sel = document.getElementById('wilayahSelect');
@@ -654,39 +667,9 @@
   function pickPaket(id, nama){
     selectedPaket = id;
     document.getElementById('selected_paket').value = id;
-    alert("Paket dipilih: " + nama);
-    goToSlide(3);
+    goToSlide(3); // Akan mentrigger initMap
   }
 
-function setLocationAuto(){
-  const status = document.getElementById('locStatus');
-
-  if (!navigator.geolocation) {
-    status.textContent = 'Browser tidak mendukung lokasi.';
-    return;
-  }
-
-  status.textContent = 'Mengambil lokasi otomatis…';
-
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      const lat = pos.coords.latitude;
-      const lng = pos.coords.longitude;
-      const lokasi = lat + ',' + lng;
-
-      document.getElementById('guestForm').dataset.lokasi = lokasi;
-      status.textContent = 'Lokasi berhasil terdeteksi.';
-    },
-    err => {
-      status.textContent = 'Lokasi tidak diizinkan atau gagal.';
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 60000
-    }
-  );
-}
   function buildFullAddress(){
     const jalan = document.getElementById('alamat_jalan').value;
     const rt = document.getElementById('rt').value;
@@ -740,6 +723,7 @@ function setLocationAuto(){
         return;
       }
 
+      // Payload sesuai dengan semua input yang ada
       const payload = {
         nama: document.getElementById('nama').value,
         nik: document.getElementById('nik').value,
@@ -757,7 +741,7 @@ function setLocationAuto(){
         kabupaten: document.getElementById('kabupaten').value,
         full_alamat: buildFullAddress(),
         pesan: document.getElementById('pesan').value,
-        lokasi: form.dataset.lokasi || null,
+        lokasi: form.dataset.lokasi || null, // Ambil dari dataset form (hasil map)
         agree: agreeChecked ? 1 : 0
       };
 
@@ -773,13 +757,7 @@ function setLocationAuto(){
 
         if(r.ok){
           alert("Terima kasih! Form berhasil dikirim.");
-          form.reset();
-          form.dataset.lokasi = "";
-          document.getElementById('selected_paket').value = "";
-          document.getElementById('selected_wilayah').value = "";
-          selectedPaket = null;
-          selectedWilayah = null;
-          goToSlide(1);
+          location.reload();
         } else {
           const txt = await r.text().catch(()=>null);
           alert("Gagal mengirim data. " + (txt ? "\n" + txt : ""));

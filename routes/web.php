@@ -1,20 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DisplayController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\RoomController;
-use App\Http\Controllers\GuestController;
-use App\Http\Controllers\FoodOrderController;
-use App\Http\Controllers\HotelController;
-use App\Http\Controllers\ChannelController;
-use App\Http\Controllers\AroomController;
-use App\Http\Controllers\AguestController;
-use App\Http\Controllers\AfoodController;
-use App\Http\Controllers\Sp_adminController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AfoodController;
+use App\Http\Controllers\AroomController;
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\HotelController;
+use App\Http\Controllers\AguestController;
+use App\Http\Controllers\ChannelController;
+use App\Http\Controllers\DisplayController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Sp_adminController;
+use App\Http\Controllers\FoodOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,39 @@ Route::get('/', function () {
     }
 
     return redirect()->route('login');
+});
+
+
+// --- HALAMAN UMUM  ---
+Route::get('/pendaftaran', function () { return view('formulirpendaftaran.pendaftaran'); });
+Route::get('/lapor', function () { return view('formulirpendaftaran.lapor'); });
+Route::get('/loginP', function () { return view('formulirpendaftaran.login'); })->name('loginP');
+Route::post('/loginP', [AuthController::class, 'login'])->name('login.post');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+// --- ADMIN ---
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboardA', function () { return view('formulirpendaftaran.admin.dashboard'); });
+    Route::get('/admin/data-pendaftar', function () { return view('formulirpendaftaran.admin.data-pendaftar'); });
+    Route::get('/admin/data-teknisi', function () { return view('formulirpendaftaran.admin.data-teknisi'); });
+    Route::get('/admin/paket', function () { return view('formulirpendaftaran.admin.paket'); });
+    Route::get('/admin/pelanggan', function () { return view('formulirpendaftaran.admin.pelanggan'); });
+    Route::get('/admin/pengaturan', function () { return view('formulirpendaftaran.admin.pengaturan'); });
+    Route::get('/admin/wilayah', function () { return view('formulirpendaftaran.admin.wilayah'); });
+    Route::get('/admin/laporan-instalasi', function () { return view('formulirpendaftaran.admin.laporan-instalasi'); });
+});
+
+
+// --- TEKNISI ---
+Route::middleware(['auth', 'role:teknisi'])->group(function () {
+    Route::get('/teknisi', function () { return view('formulirpendaftaran.teknisi.dashboard'); });
+    Route::get('/teknisi/tugas', function () { return view('formulirpendaftaran.teknisi.tugas'); });
+    Route::get('/teknisi/gangguan', function () { return view('formulirpendaftaran.teknisi.gangguan'); });
+    Route::get('/teknisi/riwayat', function () { return view('formulirpendaftaran.teknisi.riwayat'); });
+    Route::get('/teknisi/inventaris', function () { return view('formulirpendaftaran.teknisi.inventaris'); });
+    Route::get('/teknisi/peralatan', function () { return view('formulirpendaftaran.teknisi.peralatan'); });
+    Route::get('/teknisi/profil', function () { return view('formulirpendaftaran.teknisi.profil'); });
 });
 
 /*
@@ -181,10 +215,6 @@ Route::get('/display/{room}', [DisplayController::class, 'show'])
 |--------------------------------------------------------------------------
 */
 
-Route::get('/wilayah', [ApiController::class, 'daftarWilayah']);
-Route::get('/paket/wilayah/{wilayahId?}', [ApiController::class, 'paketBerdasarkanWilayah']);
-Route::post('/tamu', [ApiContr1oller::class, 'simpanTamu']);
-Route::get('/admin/tamu', [ApiController::class, 'daftarTamuAdmin']);
 
 Route::get('/test-api', fn() => 'API TERBACA');
 
@@ -195,3 +225,4 @@ Route::get('/test-api', fn() => 'API TERBACA');
 */
 
 require __DIR__ . '/auth.php';
+

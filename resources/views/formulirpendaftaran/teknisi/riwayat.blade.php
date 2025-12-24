@@ -7,28 +7,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
-            --primary:#0b6fd6; --bg-body:#f4f7fa; --bg-card:#ffffff;
-            --text-main:#1f2937; --text-muted:#6b7280; --border:#e5e7eb; --success:#10b981;
-            --sidebar-width:260px; --shadow:0 4px 6px -1px rgba(0,0,0,.05);
-        }
-        *{box-sizing:border-box}
-        body{margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); display:flex; min-height:100vh;}
-        
-        .sidebar{width:var(--sidebar-width); background:var(--bg-card); border-right:1px solid var(--border); position:fixed; height:100%; top:0; left:0;}
-        .nav{padding:20px 16px;}
-        .nav-label{font-size:11px; text-transform:uppercase; color:var(--text-muted); margin:20px 0 8px 12px; font-weight:600;}
-        .nav-item{display:flex; align-items:center; padding:12px; color:var(--text-muted); text-decoration:none; border-radius:8px; margin-bottom:4px; font-size:14px;}
-        .nav-item:hover{background:#e0f2fe; color:var(--primary)}
-        .nav-item.active{background:var(--primary); color:#fff;}
-        .nav-icon{margin-right:12px; width: 20px; text-align: center;}
-
-        .main{margin-left:var(--sidebar-width); flex:1; padding:30px;}
-        .card-table { background: white; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow); }
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #f9fafb; text-align: left; padding: 15px; font-size: 13px; color: var(--text-muted); border-bottom: 1px solid var(--border); }
-        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 14px; }
-        .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; background: #dcfce7; color: #15803d; }
+        :root { --primary:#0b6fd6; --bg-body:#f4f7fa; --text-muted:#6b7280; --sidebar-width:260px; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-body); display: flex; }
+        .sidebar { width: var(--sidebar-width); background: #fff; border-right: 1px solid #e5e7eb; position: fixed; height: 100%; top: 0; left: 0; }
+        .nav { padding: 20px 16px; display: flex; flex-direction: column; gap: 5px; }
+        .nav-item { padding: 12px; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; border-radius: 8px; font-size: 14px; }
+        .nav-item.active { background: var(--primary); color: #fff; }
+        .nav-icon { width: 25px; text-align: center; margin-right: 10px; }
+        .main { margin-left: var(--sidebar-width); flex: 1; padding: 30px; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,.05); }
+        th { background: #f9fafb; text-align: left; padding: 15px; font-size: 13px; color: var(--text-muted); }
+        td { padding: 15px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+        .img-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -40,13 +30,13 @@
     </a>
 
     <div class="nav-label">Manajemen Tugas</div>
-    <a href="/teknisi/tugas" class="nav-item">
+    <a href="/teknisi/tugas" class="nav-item active">
       <span class="nav-icon"><i class="fa-solid fa-screwdriver-wrench"></i></span> Tugas Instalasi
     </a>
     <a href="/teknisi/gangguan" class="nav-item">
       <span class="nav-icon"><i class="fa-solid fa-circle-exclamation"></i></span> Perbaikan Gangguan
     </a>
-    <a href="/teknisi/riwayat" class="nav-item active">
+    <a href="/teknisi/riwayat" class="nav-item">
       <span class="nav-icon"><i class="fa-solid fa-clock-rotate-left"></i></span> Riwayat Kerja
     </a>
 
@@ -61,85 +51,75 @@
 </aside>
 
 <main class="main">
-    <div style="margin-bottom: 30px;">
-        <h1 style="margin:0">Riwayat Kerja</h1>
-        <p style="color:var(--text-muted)">Daftar seluruh pekerjaan yang telah diselesaikan.</p>
-    </div>
-
-<div class="card-table">
+    <h1>Riwayat Kerja</h1>
     <table>
         <thead>
-            <tr>
-                <th>Tanggal</th>
-                <th>Pelanggan</th>
-                <th>Paket</th>
-                <th>Bukti Foto</th> <th>Status</th>
-            </tr>
+            <tr><th>Tanggal</th><th>Pelanggan</th><th>Paket</th><th>Foto</th><th>Status</th></tr>
         </thead>
         <tbody id="riwayatTable">
-            <tr><td colspan="5" style="text-align:center; padding:20px;">Memuat riwayat...</td></tr>
+            <tr><td colspan="5" style="text-align:center; padding:20px">Memuat data...</td></tr>
         </tbody>
     </table>
-</div>
+</main>
 
-<div id="modalImg" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center; padding:20px;" onclick="this.style.display='none'">
-    <img id="imgFull" src="" style="max-width:100%; max-height:90%; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+<div id="modalImg" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;" onclick="this.style.display='none'">
+    <img id="imgFull" src="" style="max-width:90%; max-height:90%; border-radius:10px;">
 </div>
 
 <script>
-    const API_BASE = 'http://localhost:8000/api';
+    const API_URL = 'http://localhost:8000/api/teknisi/tugas';
+    const BASE_URL = window.location.origin; // http://localhost:8000
 
-    async function loadRiwayat() {
-        const tb = document.getElementById('riwayatTable');
+    async function loadData() {
         try {
-            const response = await fetch(`${API_BASE}/teknisi/tugas`);
-            if (!response.ok) throw new Error('Gagal mengambil data');
+            const res = await fetch(API_URL);
+            const data = await res.json();
+            const finished = data.filter(d => d.status === 'Terpasang');
+            const tb = document.getElementById('riwayatTable');
             
-            const data = await response.json();
-            const selesai = data.filter(d => d.status === 'Terpasang');
-
             tb.innerHTML = '';
-
-            if (selesai.length === 0) {
-                tb.innerHTML = '<tr><td colspan="5" style="text-align:center">Belum ada riwayat pekerjaan.</td></tr>';
+            if(finished.length === 0) {
+                tb.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px">Belum ada data.</td></tr>';
                 return;
             }
 
-            selesai.forEach(r => {
-                // Format tanggal Indonesia
-                const tgl = new Date(r.updated_at).toLocaleDateString('id-ID', {
-                    day: '2-digit', month: 'short', year: 'numeric'
-                });
-
-                // Cek Foto
-                const fotoUrl = r.foto_instalasi ? `/storage/instalasi/${r.foto_instalasi}` : null;
-                const fotoHtml = fotoUrl 
-                    ? `<img src="${fotoUrl}" onclick="openImg('${fotoUrl}')" style="width:40px; height:40px; border-radius:6px; object-fit:cover; cursor:pointer; border:1px solid #ddd;">`
-                    : '<span style="color:#ccc; font-size:11px;">No Photo</span>';
+            finished.forEach(item => {
+                // 1. Format Tanggal
+                const tgl = item.updated_at ? new Date(item.updated_at).toLocaleDateString('id-ID') : '-';
+                
+                // 2. Format Foto (encodeURI PENTING untuk mengatasi spasi di DB Anda)
+                let imgHtml = '<span style="color:#ccc; font-size:11px">No Foto</span>';
+                
+                if (item.foto_bukti) {
+                    // encodeURI mengubah spasi menjadi %20 agar browser bisa membacanya
+                    const path = `${BASE_URL}/storage/instalasi/${encodeURI(item.foto_bukti)}`;
+                    imgHtml = `<img src="${path}" class="img-thumb" onclick="openFoto('${path}')" onerror="this.onerror=null;this.src='https://placehold.co/50x50?text=Error'">`;
+                }
 
                 tb.innerHTML += `
-                <tr>
-                    <td><span style="font-size:12px; color:var(--text-muted)">${tgl}</span></td>
-                    <td>
-                        <strong>${r.nama}</strong><br>
-                        <small style="color:var(--text-muted)">${r.full_alamat || r.alamat_jalan}</small>
-                    </td>
-                    <td><small>${r.paket ? r.paket.nama : '-'}</small></td>
-                    <td>${fotoHtml}</td>
-                    <td><span class="status-pill">Selesai</span></td>
-                </tr>`;
+                    <tr>
+                        <td>${tgl}</td>
+                        <td>
+                            <strong>${item.nama}</strong><br>
+                            <small style="color:#888">${item.alamat_jalan || '-'}</small>
+                        </td>
+                        <td>${item.nama_paket || '-'}</td>
+                        <td>${imgHtml}</td>
+                        <td><span style="background:#dcfce7; color:#15803d; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold">Selesai</span></td>
+                    </tr>
+                `;
             });
-        } catch (e) {
-            tb.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Terjadi kesalahan: ${e.message}</td></tr>`;
+        } catch (error) {
+            document.getElementById('riwayatTable').innerHTML = `<tr><td colspan="5" style="color:red; text-align:center">Error: ${error.message}</td></tr>`;
         }
     }
 
-    function openImg(url) {
+    function openFoto(url) {
         document.getElementById('imgFull').src = url;
         document.getElementById('modalImg').style.display = 'flex';
     }
 
-    loadRiwayat();
+    loadData();
 </script>
 </body>
 </html>
