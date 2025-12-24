@@ -183,7 +183,7 @@ Route::get('/display/{room}', [DisplayController::class, 'show'])
 
 Route::get('/wilayah', [ApiController::class, 'daftarWilayah']);
 Route::get('/paket/wilayah/{wilayahId?}', [ApiController::class, 'paketBerdasarkanWilayah']);
-Route::post('/tamu', [ApiController::class, 'simpanTamu']);
+Route::post('/tamu', [ApiContr1oller::class, 'simpanTamu']);
 Route::get('/admin/tamu', [ApiController::class, 'daftarTamuAdmin']);
 
 Route::get('/test-api', fn() => 'API TERBACA');
